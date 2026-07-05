@@ -18,7 +18,9 @@ Use BUBAT-R for:
 - `workflow.md` — hard-evidence reconstruction workflow
 - `overlays/takeover.md` — takeover readiness overlay
 - `overlays/late-document-feeding.md` — late/stale docs feeding overlay
+- `docs/RFC-docr-target-repo.md` — RFC for hierarchical context docs in analyzed target repos
 - `templates/hard-evidence-reconstruction/` — artifact templates
+- `templates/hierarchical-context-docr/` — root/child `AGENTS.md` starter templates for target repos
 
 ## Install
 
@@ -191,6 +193,21 @@ Use after BUBAT-R stabilizes reference design.
 bubat-r feed bubat
 ```
 
+### 7. Materialize hierarchical context docs in target repo
+
+Use after Stage A–H or after targeted Stage I deepening when next runs need local context near code.
+
+```text
+bubat-r export docr
+bubat-r export docr for checkout max-depth 3
+```
+
+Read:
+
+```text
+bubat-r/docs/RFC-docr-target-repo.md
+```
+
 ## Suggested Commands
 
 ```text
@@ -200,6 +217,7 @@ bubat-r feed docs <path> for <area> max <n>
 bubat-r status
 bubat-r verdict
 bubat-r feed bubat
+bubat-r export docr [for <area>] [max-depth <n>]
 ```
 
 `bubat-r run` and `bubat-r feed bubat` are wired through BUBAT trigger routing. Other commands above remain command contracts for now.
@@ -227,6 +245,15 @@ reconstruction/
     GAP-xxx-*.md
   docs-feed/
     DOC-xxx-*.md
+```
+
+Optional Stage J / DOCR output additionally writes hierarchical context docs near code:
+
+```text
+AGENTS.md
+apps/AGENTS.md
+packages/AGENTS.md
+services/<area>/AGENTS.md
 ```
 
 EventStorming support additionally uses:

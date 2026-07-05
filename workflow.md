@@ -151,6 +151,7 @@ Stage command map:
 | G Component Decomposition   | `outline`, `symbol`, `class`, `implementations`, `hierarchy`       |
 | H Reference Design Decision | `query`, source citations, selective source reads                  |
 | I Critical Gap Deepening    | `refs`, `usages`, `callers`, `call-tree`, `query`, targeted `rg`   |
+| J Hierarchical Context Docs | `map`, `module`, `deps`, `dependents`, `api`, targeted `outline`   |
 
 ---
 
@@ -800,6 +801,58 @@ Exit criteria:
 
 ---
 
+## Stage J — Hierarchical Context Docs Materialization
+
+Tujuan:
+
+- materialize context docs hirarkis dekat code di repo target
+- distribusikan hasil rekonstruksi ke subtree penting agar next run lebih lokal dan hemat context
+- pertahankan unknown/contradiction sebagai context lokal, bukan menyapu ambiguity
+
+Kapan dijalankan:
+
+- setelah Stage H untuk baseline global, atau
+- setelah Stage I pada area yang akan sering disentuh, atau
+- sebelum handoff ke agent/tim berikutnya
+
+Input minimum:
+
+- `02-coverage-ledger.md`
+- `03-main-spine.md`
+- `04-runtime-map.md`
+- `05-behavior-spine.md`
+- `06-ownership-map.md`
+
+Input preferred:
+
+- `07-domain-map.md`
+- `08-contract-map.md`
+- `11-reference-design.md`
+- `12-drift-ambiguity-report.md`
+
+Output:
+
+- root `AGENTS.md` pada repo target
+- selected child `AGENTS.md` pada subtree durable boundary
+- refreshed parent/child index untuk docs yang dimaterialisasi
+
+Aturan:
+
+- jangan generate `AGENTS.md` di semua folder
+- pilih subtree dengan runtime, ownership, contract, risk, atau main-spine significance yang jelas
+- isi doc harus evidence-backed; tidak boleh lebih kuat dari confidence yang ada
+- child doc adalah projection ringkas dari artifacts, bukan source of truth baru
+- marker-block management direkomendasikan bila repo target juga diedit manusia
+
+Exit criteria:
+
+- root context doc ada dan menunjuk subtree penting
+- area weight 5–4 yang boundary-worthy punya context lokal
+- no false certainty introduced
+- contradictions/unknowns material tetap terlihat
+
+---
+
 ## 7. Confidence Model
 
 Setiap temuan wajib punya status salah satu:
@@ -836,6 +889,7 @@ Workflow ini menghasilkan paket artefak berikut:
 12. `drift-ambiguity-report.md`
 13. optional `gaps/GAP-xxx-*.md` from Stage I deepening loops
 14. optional `readiness-verdict.md` when Stage I or takeover decision runs
+15. optional hierarchical context docs in target repo: root `AGENTS.md` + selected child `AGENTS.md` from Stage J
 
 Kalau ingin dipetakan ke penyusunan dokumen arsitektur:
 
@@ -862,6 +916,7 @@ Urutan wajib:
 7. G Component Decomposition
 8. H Reference Design Decision
 9. I Critical Gap Deepening Loop, when critical coverage target not met or before major change
+10. J Hierarchical Context Docs Materialization, when local durable context near code is useful
 
 Aturan:
 
@@ -869,6 +924,7 @@ Aturan:
 - boleh scan komponen sejak awal untuk riset, tapi belum boleh dijadikan output arsitektur final
 - domain naming final ditetapkan setelah ownership dan behavior cukup kuat
 - jika Stage H menghasilkan critical coverage di bawah target, jalankan Stage I loop sebelum major change
+- jika hasil rekonstruksi akan dipakai ulang lintas sesi/agent, jalankan Stage J untuk materialize context docs dekat code
 
 ---
 
@@ -959,6 +1015,7 @@ Reconstruction dianggap layak kalau:
 - contradictions explicitly logged
 - final reference design statement distinguishes verified vs unresolved
 - coverage verdict and readiness verdict separated when Stage I runs
+- jika Stage J dijalankan, root/child `AGENTS.md` target repo valid, ringkas, dan sinkron dengan artifacts
 
 Major-change readiness dianggap layak kalau:
 
@@ -1024,4 +1081,13 @@ reconstruction/
   13-readiness-verdict.md        # optional, when Stage I/readiness decision runs
   gaps/
     GAP-001-example.md
+```
+
+Optional Stage J target-repo output:
+
+```text
+AGENTS.md
+apps/AGENTS.md
+packages/AGENTS.md
+services/<area>/AGENTS.md
 ```

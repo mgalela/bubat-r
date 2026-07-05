@@ -17,6 +17,7 @@ bubat-r run [target-path] [--max-hours N]
 5. Execute workflow Stage A–H.
 6. Write coverage and reference design.
 7. If critical coverage below target, recommend `bubat-r gap`.
+8. If durable local context near code is needed, recommend `bubat-r export docr`.
 
 ## Outputs
 

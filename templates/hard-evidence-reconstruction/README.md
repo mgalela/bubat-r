@@ -39,6 +39,7 @@ Workflow:
 7. Put unresolved gaps in `12-drift-ambiguity-report.md`.
 8. If critical coverage target not met, or coverage passes but critical risk remains, copy `gaps/GAP-000-template.md` into `gaps/GAP-001-<area>.md` and run Stage I deepening loops.
 9. Record final coverage/readiness split in `13-readiness-verdict.md`.
+10. If target repo needs durable local context near code, materialize root/child `AGENTS.md` with `bubat-r export docr` and `templates/hierarchical-context-docr/`.
 
 Loop command pattern:
 
