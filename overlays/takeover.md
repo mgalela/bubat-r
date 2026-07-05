@@ -60,6 +60,7 @@ Aturan:
 - Main workflow tetap menghasilkan reference design
 - Main J/DOCR dapat materialize local context docs near code for handoff speed
 - Overlay menghasilkan takeover readiness
+- `00-workflow-status.md` should track whether T0, T1, and T2 already ran, are in progress, blocked, or not run
 - Jangan campur risk decision dengan architecture evidence
 - Risk boleh memengaruhi prioritas, bukan memalsukan evidence
 
@@ -76,6 +77,7 @@ Waktu ideal:
 
 Output:
 - `takeover-viability.md`
+- `00-workflow-status.md` updated with `T0` status
 
 Checklist minimum:
 
@@ -152,6 +154,7 @@ How it feeds main workflow:
 - missing tests lowers behavior confidence
 - missing deploy config lowers runtime/container confidence
 - missing env/secrets highlights external integrations for Stage A
+- if T0 stops early, status doc should explain why later stages may remain `Not Run` or `Blocked`
 
 ---
 
@@ -167,6 +170,7 @@ Waktu:
 
 Output:
 - `risk-register.md`
+- `00-workflow-status.md` updated with `T1` status
 
 Risk categories:
 - data integrity
@@ -239,6 +243,7 @@ Waktu:
 
 Output:
 - `safe-change-readiness.md`
+- `00-workflow-status.md` updated with `T2` status
 
 Readiness levels:
 
@@ -383,6 +388,7 @@ How to merge with main workflow:
 
 ```text
 reconstruction/
+  00-workflow-status.md
   00-takeover-viability.md
   13-risk-register.md
   14-safe-change-readiness.md

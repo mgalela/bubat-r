@@ -12,6 +12,7 @@ Recommended output set:
 
 ```text
 reconstruction/
+  00-workflow-status.md
   01-evidence-catalog.md
   02-coverage-ledger.md
   03-main-spine.md
@@ -25,6 +26,7 @@ reconstruction/
   11-reference-design.md
   12-drift-ambiguity-report.md
   13-readiness-verdict.md
+  docr-candidates.md
   gaps/
     GAP-000-template.md
   research/
@@ -33,16 +35,18 @@ reconstruction/
 
 Workflow:
 1. Run `ast-index rebuild` or `ast-index update`.
-2. Fill `01–06` first.
-3. In `05-behavior-spine.md`, capture EventStorming evidence and candidate `.es` draft for main flows.
-4. Compute coverage in `02-coverage-ledger.md`.
-5. Use coverage gaps to guide `07–10`, including event ownership and projection contracts.
-6. Publish `11-reference-design.md` only for verified/covered areas.
-7. Put unresolved gaps in `12-drift-ambiguity-report.md`.
-8. If critical coverage target not met, or coverage passes but critical risk remains, copy `gaps/GAP-000-template.md` into `gaps/GAP-001-<area>.md` and run Stage I deepening loops.
-9. Record final coverage/readiness split in `13-readiness-verdict.md`.
-10. If using question-driven or parallel discovery overlay, copy `research/RESEARCH-000-template.md` into `research/YYYY-MM-DD-<topic>.md`.
-11. If target repo needs durable local context near code, materialize root/child `AGENTS.md` with `bubat-r export docr` and `templates/hierarchical-context-docr/`.
+2. Start `00-workflow-status.md` immediately and keep stage state current.
+3. Fill `01–06` first.
+4. In `05-behavior-spine.md`, capture EventStorming evidence and candidate `.es` draft for main flows.
+5. Compute coverage in `02-coverage-ledger.md`.
+6. Use coverage gaps to guide `07–10`, including event ownership and projection contracts.
+7. Publish `11-reference-design.md` only for verified/covered areas.
+8. Put unresolved gaps in `12-drift-ambiguity-report.md`.
+9. If critical coverage target not met, or coverage passes but critical risk remains, copy `gaps/GAP-000-template.md` into `gaps/GAP-001-<area>.md` and run Stage I deepening loops.
+10. Record final coverage/readiness split in `13-readiness-verdict.md`.
+11. Maintain `docr-candidates.md` during Stage A–H to track subtree candidates without generating local docs yet.
+12. If using question-driven or parallel discovery overlay, copy `research/RESEARCH-000-template.md` into `research/YYYY-MM-DD-<topic>.md`.
+13. If target repo needs durable local context near code, materialize root/child `AGENTS.md` with `bubat-r export docr` and `templates/hierarchical-context-docr/`.
 
 Loop command pattern:
 

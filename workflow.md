@@ -333,6 +333,60 @@ Setiap Stage A–D output wajib punya section:
 
 ---
 
+## 5.6 Workflow Status Tracking
+
+Create `00-workflow-status.md` at run start.
+
+Purpose:
+- show exactly which stages ran
+- prevent absence of output from being misread as missing capability
+- distinguish `Not Run`, `In Progress`, `Done`, and `Blocked`
+- record optional overlay usage: research, docs-feed, DOCR
+
+Rules:
+- initialize before Stage A
+- update after every completed stage
+- if run stops early, explicitly mark later stages `Not Run` or `Blocked`
+- if expected artifacts are absent, status doc must explain why
+- `bubat-r status` should read this file first
+
+Minimum fields:
+- highest completed stage
+- checklist for T0, A–J, optional overlays
+- coverage snapshot
+- active gaps
+- next recommended step
+
+## 5.7 DOCR Candidate Tracking
+
+Do not generate full hierarchical context docs during every stage.
+
+Instead, maintain lightweight DOCR candidate tracking during Stage A–H.
+
+Purpose:
+- preserve subtree candidates for later Stage J selection
+- capture local ambiguity/risk pointers near likely boundaries
+- reduce repeated boundary rethinking across sessions
+- avoid false certainty and doc churn from premature local docs
+
+Rules:
+- maintain `docr-candidates.md` as staging artifact only
+- canonical truth remains `01–12` artifacts
+- candidate tracking may be updated at any stage A–H
+- Stage J remains sole full materialization step for root/child `AGENTS.md`
+- Stage I may refresh nearest existing child doc only if DOCR already exists for touched area
+
+Minimum fields:
+- subtree path
+- candidate reason
+- signal tags (`RT`, `WR`, `CT`, `RS`, `MS`, `CH`, `SZ`)
+- score or priority
+- stage first seen
+- local ambiguity pointer
+- materialization readiness
+
+---
+
 ## 6. Reconstruction Stages
 
 ## Stage A — Evidence Harvest
@@ -358,6 +412,8 @@ Cari minimal:
 
 Output:
 
+- `Workflow Status` updated: Stage A = `In Progress` then `Done/Blocked`
+- `DOCR Candidates` updated with early subtree candidates
 - `Evidence Catalog`
 - `Coverage Ledger` initial
 - `Main Spine` draft
@@ -417,6 +473,8 @@ Aturan:
 
 Output:
 
+- `Workflow Status` updated for Stage B
+- `DOCR Candidates` updated with runtime-boundary candidates
 - `Runtime Map`
 - updated `Coverage Ledger`
 
@@ -474,6 +532,8 @@ Format flow:
 
 Output:
 
+- `Workflow Status` updated for Stage C
+- `DOCR Candidates` updated with flow/hotspot candidates
 - `Behavior Spine`
 - updated `Coverage Ledger`
 
@@ -522,6 +582,8 @@ Aturan:
 
 Output:
 
+- `Workflow Status` updated for Stage D
+- `DOCR Candidates` updated with ownership-boundary candidates
 - `Ownership Map`
 - updated `Coverage Ledger`
 - event/projection ownership evidence
@@ -566,6 +628,8 @@ Pisahkan:
 
 Output:
 
+- `Workflow Status` updated for Stage E
+- `DOCR Candidates` updated with context-boundary candidates
 - `Domain Map`
 
 Isi minimum per context:
@@ -606,6 +670,8 @@ Termasuk:
 
 Output:
 
+- `Workflow Status` updated for Stage F
+- `DOCR Candidates` updated with contract-boundary candidates
 - `Contract Map`
 
 Isi minimum:
@@ -650,6 +716,8 @@ Aturan:
 
 Output:
 
+- `Workflow Status` updated for Stage G
+- `DOCR Candidates` updated with component-locality hints where useful
 - `Component Map`
 - `Code Trace Map`
 
@@ -688,6 +756,7 @@ Keputusan per area:
 
 Output:
 
+- `Workflow Status` updated for Stage H
 - `Architecture Reference Design`
 - `Drift / Ambiguity Report`
 
@@ -722,6 +791,7 @@ Input:
 
 Output:
 
+- `Workflow Status` updated for Stage I
 - `gaps/GAP-xxx-*.md`
 - updated `02-coverage-ledger.md`
 - updated affected maps: behavior, ownership, contract, component, code trace
@@ -832,6 +902,7 @@ Input preferred:
 
 Output:
 
+- `Workflow Status` updated for Stage J
 - root `AGENTS.md` pada repo target
 - selected child `AGENTS.md` pada subtree durable boundary
 - refreshed parent/child index untuk docs yang dimaterialisasi
@@ -875,21 +946,23 @@ Aturan:
 
 Workflow ini menghasilkan paket artefak berikut:
 
-1. `evidence-catalog.md`
-2. `coverage-ledger.md`
-3. `main-spine.md`
-4. `runtime-map.md`
-5. `behavior-spine.md`
-6. `ownership-map.md`
-7. `domain-map.md`
-8. `contract-map.md`
-9. `component-map.md`
-10. `code-trace-map.md`
-11. `architecture-reference-design.md`
-12. `drift-ambiguity-report.md`
-13. optional `gaps/GAP-xxx-*.md` from Stage I deepening loops
-14. optional `readiness-verdict.md` when Stage I or takeover decision runs
-15. optional hierarchical context docs in target repo: root `AGENTS.md` + selected child `AGENTS.md` from Stage J
+1. `workflow-status.md`
+2. `evidence-catalog.md`
+3. `coverage-ledger.md`
+4. `main-spine.md`
+5. `runtime-map.md`
+6. `behavior-spine.md`
+7. `ownership-map.md`
+8. `domain-map.md`
+9. `contract-map.md`
+10. `component-map.md`
+11. `code-trace-map.md`
+12. `architecture-reference-design.md`
+13. `drift-ambiguity-report.md`
+14. `docr-candidates.md`
+15. optional `gaps/GAP-xxx-*.md` from Stage I deepening loops
+16. optional `readiness-verdict.md` when Stage I or takeover decision runs
+17. optional hierarchical context docs in target repo: root `AGENTS.md` + selected child `AGENTS.md` from Stage J
 
 Kalau ingin dipetakan ke penyusunan dokumen arsitektur:
 
@@ -907,6 +980,7 @@ Kalau ingin dipetakan ke penyusunan dokumen arsitektur:
 
 Urutan wajib:
 
+0. Initialize `00-workflow-status.md`
 1. A Evidence Harvest
 2. B Runtime Map
 3. C Behavior Spine
@@ -1066,6 +1140,7 @@ Gunakan kalimat kerja ini:
 
 ```text
 reconstruction/
+  00-workflow-status.md
   01-evidence-catalog.md
   02-coverage-ledger.md
   03-main-spine.md
@@ -1079,6 +1154,7 @@ reconstruction/
   11-reference-design.md
   12-drift-ambiguity-report.md
   13-readiness-verdict.md        # optional, when Stage I/readiness decision runs
+  docr-candidates.md
   gaps/
     GAP-001-example.md
 ```

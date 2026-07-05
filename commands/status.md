@@ -10,14 +10,18 @@ bubat-r status [target-path]
 
 ## Reads
 
+- `reconstruction/00-workflow-status.md` first
 - `reconstruction/02-coverage-ledger.md`
 - `reconstruction/12-drift-ambiguity-report.md`
 - `reconstruction/gaps/*.md`
 - `reconstruction/13-readiness-verdict.md` if present
+- `reconstruction/research/*.md` if research overlay used
 - root `AGENTS.md` and selected child `AGENTS.md` if Stage J / DOCR export already ran
 
 ## Reports
 
+- current highest completed stage
+- stage checklist status: done / in progress / blocked / not run
 - runtime coverage
 - behavior coverage
 - data ownership coverage
@@ -26,5 +30,15 @@ bubat-r status [target-path]
 - open `Unknown` weight-5 items
 - unresolved `Contradicted`
 - unresolved `Covered with Critical Risk`
+- gap dossier status: present/missing formal `GAP-*.md` vs gap signals only in ledger
+- research overlay status: present/missing memo files
 - DOCR status: present/missing root doc, present/missing key child docs, suspected stale local context docs
-- next recommended gap loop or `bubat-r export docr` if reconstruction is stable but local context docs are missing/stale
+- next recommended stage, gap loop, or `bubat-r export docr`
+
+## Interpretation Rule
+
+If an expected artifact is missing, report whether:
+- stage not run yet
+- stage blocked
+- stage in progress
+- feature/overlay optional and not invoked

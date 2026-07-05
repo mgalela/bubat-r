@@ -29,12 +29,14 @@ bubat-r export docr . for tenant-isolation max-depth 3
    - `reconstruction/08-contract-map.md`
    - `reconstruction/11-reference-design.md`
    - `reconstruction/12-drift-ambiguity-report.md`
-3. Select only durable subtree boundaries.
-4. Create or update root `AGENTS.md` in target repo.
-5. Create or update child `AGENTS.md` only for selected subtrees.
-6. Preserve `Unknown` and `Contradicted` where material.
-7. Refresh parent/child indexes.
-8. If repo is human-edited, prefer managed marker blocks.
+3. Read `reconstruction/docr-candidates.md` if present.
+4. Select only durable subtree boundaries.
+5. Create or update root `AGENTS.md` in target repo.
+6. Create or update child `AGENTS.md` only for selected subtrees.
+7. Preserve `Unknown` and `Contradicted` where material.
+8. Refresh parent/child indexes.
+9. If `docr-candidates.md` exists, mark shortlisted areas as `Materialized / Deferred / Rejected`.
+10. If repo is human-edited, prefer managed marker blocks.
 
 ## Outputs
 

@@ -30,6 +30,7 @@ Combined order:
 
 ```text
 Main A–H/I produces evidence, coverage, flows, ownership, contracts
++ `docr-candidates.md` accumulates subtree signals during A–H
 → D0 Boundary Selection
 → D1 Root Context Doc
 → D2 Child Context Docs
@@ -63,6 +64,7 @@ Optional managed strategy:
 
 Tujuan:
 - pilih subtree yang layak punya local context doc
+- gunakan `docr-candidates.md` sebagai shortlist input bila tersedia
 - cegah doc explosion
 
 Create child doc when subtree has several of:
@@ -102,6 +104,7 @@ Hard override create:
 Output:
 - selected subtree list
 - skipped subtree list with reason if relevant
+- optional refresh back into `docr-candidates.md` status: `Materialized / Deferred / Rejected`
 
 ---
 
