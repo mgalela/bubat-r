@@ -44,6 +44,7 @@ T0 Takeover Viability Check
 → Main F Contract Surface Map
 → Main G Component Decomposition
 → Main H Reference Design
+→ Main J Hierarchical Context Docs Materialization
 → T2 Safe Change Readiness
 ```
 
@@ -53,10 +54,11 @@ Mapping:
 |---|---|---|---|---|
 | T0 Takeover Viability Check | sebelum Main A | repo, env hints, scripts | `takeover-viability.md` | Main A–D confidence |
 | T1 Risk Register | setelah Main D, update terus | coverage gaps, runtime, flows, ownership | `risk-register.md` | Main E–H priority |
-| T2 Safe Change Readiness | setelah Main H | reference design, risk register, coverage ledger | `safe-change-readiness.md` | planning, implementation |
+| T2 Safe Change Readiness | setelah Main H/J | reference design, risk register, coverage ledger, local context docs if present | `safe-change-readiness.md` | planning, implementation |
 
 Aturan:
 - Main workflow tetap menghasilkan reference design
+- Main J/DOCR dapat materialize local context docs near code for handoff speed
 - Overlay menghasilkan takeover readiness
 - Jangan campur risk decision dengan architecture evidence
 - Risk boleh memengaruhi prioritas, bukan memalsukan evidence

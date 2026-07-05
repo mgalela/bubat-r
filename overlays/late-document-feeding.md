@@ -63,6 +63,7 @@ Main artifacts updated only after verification:
 - `11-reference-design.md`
 - `12-drift-ambiguity-report.md`
 - `gaps/GAP-*.md`
+- nearest relevant root/child `AGENTS.md` only after claim impact is verified and DOCR docs already exist
 
 ---
 
@@ -207,16 +208,19 @@ Update rules:
 ### If claim is `Verified`
 - add doc as supporting evidence in `01-evidence-catalog.md`
 - update affected map/artifact
+- update nearest relevant root/child `AGENTS.md` if local context docs exist for touched area
 - increase confidence only if hard evidence also supports it
 
 ### If claim is `Partially Verified`
 - update gap dossier
 - add missing evidence plan
+- refresh local `AGENTS.md` only if doc must surface material ambiguity change
 - keep status `Partial` or `Covered with Risk`
 
 ### If claim is `Contradicted`
 - add to `12-drift-ambiguity-report.md`
 - do not update reference design to match doc
+- if affected DOCR docs exist, update them to preserve contradiction instead of stale certainty
 - mark as doc drift or implementation drift after decision
 
 ### If claim is `Historical Intent`

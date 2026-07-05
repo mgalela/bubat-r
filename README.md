@@ -18,6 +18,7 @@ Use BUBAT-R for:
 - `workflow.md` — hard-evidence reconstruction workflow
 - `overlays/takeover.md` — takeover readiness overlay
 - `overlays/late-document-feeding.md` — late/stale docs feeding overlay
+- `overlays/docr-materialization.md` — DOCR materialization/update overlay for target repos
 - `docs/RFC-docr-target-repo.md` — RFC for hierarchical context docs in analyzed target repos
 - `templates/hard-evidence-reconstruction/` — artifact templates
 - `templates/hierarchical-context-docr/` — root/child `AGENTS.md` starter templates for target repos
@@ -206,6 +207,7 @@ Read:
 
 ```text
 bubat-r/docs/RFC-docr-target-repo.md
+bubat-r/overlays/docr-materialization.md
 ```
 
 ## Suggested Commands

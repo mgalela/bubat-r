@@ -16,7 +16,8 @@ bubat-r gap checkout-ledger max 3
 3. Create `reconstruction/gaps/GAP-xxx-<area>.md` from template.
 4. Run loop until stop condition or max loops.
 5. Update affected artifacts.
-6. Write coverage/readiness verdict.
+6. If Stage J / DOCR docs exist for touched area, refresh nearest relevant `AGENTS.md` and affected parent indexes.
+7. Write coverage/readiness verdict.
 
 ## Stop Condition
 
