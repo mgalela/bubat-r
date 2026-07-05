@@ -19,6 +19,7 @@ Use BUBAT-R for:
 - `overlays/takeover.md` — takeover readiness overlay
 - `overlays/late-document-feeding.md` — late/stale docs feeding overlay
 - `overlays/docr-materialization.md` — DOCR materialization/update overlay for target repos
+- `overlays/research-orchestration.md` — parallel research/deepening overlay for Stage A and Stage I
 - `docs/RFC-docr-target-repo.md` — RFC for hierarchical context docs in analyzed target repos
 - `templates/hard-evidence-reconstruction/` — artifact templates
 - `templates/hierarchical-context-docr/` — root/child `AGENTS.md` starter templates for target repos
@@ -218,11 +219,12 @@ bubat-r gap <area> max <n>
 bubat-r feed docs <path> for <area> max <n>
 bubat-r status
 bubat-r verdict
+bubat-r research <question> [for <area>] [max-depth <n>]
 bubat-r feed bubat
 bubat-r export docr [for <area>] [max-depth <n>]
 ```
 
-`bubat-r run` and `bubat-r feed bubat` are wired through BUBAT trigger routing. Other commands above remain command contracts for now.
+`bubat-r run` and `bubat-r feed bubat` are wired through BUBAT trigger routing. `bubat-r research` is proposed as overlay command contract. Other commands above remain command contracts for now.
 
 ## Output Location
 
