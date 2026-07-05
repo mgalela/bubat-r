@@ -16,6 +16,8 @@ bubat-r status [target-path]
 - `reconstruction/gaps/*.md`
 - `reconstruction/13-readiness-verdict.md` if present
 - `reconstruction/research/*.md` if research overlay used
+- `reconstruction/docs-feed/*.md` if late-doc overlay used
+- `reconstruction/docr-export-report.md` if Stage J / DOCR export ran
 - root `AGENTS.md` and selected child `AGENTS.md` if Stage J / DOCR export already ran
 
 ## Reports
@@ -32,7 +34,8 @@ bubat-r status [target-path]
 - unresolved `Covered with Critical Risk`
 - gap dossier status: present/missing formal `GAP-*.md` vs gap signals only in ledger
 - research overlay status: present/missing memo files
-- DOCR status: present/missing root doc, present/missing key child docs, suspected stale local context docs
+- late-doc overlay status: present/missing register/verification/aggregate/summary files, count of `Target Design Only` claims
+- DOCR status: present/missing root doc, present/missing key child docs, present/missing export report, suspected stale local context docs
 - next recommended stage, gap loop, or `bubat-r export docr`
 
 ## Interpretation Rule

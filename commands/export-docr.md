@@ -35,13 +35,15 @@ bubat-r export docr . for tenant-isolation max-depth 3
 6. Create or update child `AGENTS.md` only for selected subtrees.
 7. Preserve `Unknown` and `Contradicted` where material.
 8. Refresh parent/child indexes.
-9. If `docr-candidates.md` exists, mark shortlisted areas as `Materialized / Deferred / Rejected`.
-10. If repo is human-edited, prefer managed marker blocks.
+9. Write `reconstruction/docr-export-report.md` with selected vs deferred vs rejected subtree rationale.
+10. If `docr-candidates.md` exists, mark shortlisted areas as `Materialized / Deferred / Rejected` and keep summary aligned with export report.
+11. If repo is human-edited, prefer managed marker blocks.
 
 ## Outputs
 
 - `<target>/AGENTS.md`
 - `<target>/<subtree>/AGENTS.md`
+- `reconstruction/docr-export-report.md`
 
 ## Rules
 

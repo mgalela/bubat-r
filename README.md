@@ -245,10 +245,13 @@ reconstruction/
   11-reference-design.md
   12-drift-ambiguity-report.md
   13-readiness-verdict.md
+  docr-export-report.md
   gaps/
     GAP-xxx-*.md
   docs-feed/
     DOC-xxx-*.md
+    CLAIMS-AGGREGATE.md
+    docs-feed-summary.md
 ```
 
 Optional Stage J / DOCR output additionally writes hierarchical context docs near code:

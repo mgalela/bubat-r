@@ -19,10 +19,12 @@ bubat-r feed docs docs/LEDGER_DESIGN.md for checkout-ledger max 3
 1. Register doc under `reconstruction/docs-feed/`.
 2. Classify doc/sections.
 3. Extract atomic claims.
-4. Map claims to gaps/coverage items.
-5. Verify claims against code/runtime/schema/config.
-6. Update artifacts only for verified impact.
-7. Record contradicted/stale docs in drift report.
+4. If multiple docs hit same area, cluster duplicate/near-duplicate claims with `docs-feed/CLAIMS-AGGREGATE.md`.
+5. Map claims or claim clusters to gaps/coverage items.
+6. Verify claims against code/runtime/schema/config.
+7. Update artifacts only for verified impact.
+8. Record contradicted/stale docs in drift report.
+9. Surface `Target Design Only` claims clearly in `docs-feed/docs-feed-summary.md`.
 
 Rule:
 

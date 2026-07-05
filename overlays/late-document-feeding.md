@@ -49,6 +49,7 @@ reconstruction/docs-feed/
   DOC-001-register.md
   DOC-001-claims.md
   DOC-001-verification.md
+  CLAIMS-AGGREGATE.md
   docs-feed-summary.md
 ```
 
@@ -170,6 +171,11 @@ Mapping table:
 | `CL-001` | `GAP-001-checkout-ledger` | doc says outbox intended | `rg createPosLedgerOutbox src` |
 
 Claims not mapped to current gaps go to backlog, not immediate reconstruction.
+
+If multiple docs hit same area:
+- normalize duplicate/near-duplicate claims into `CLAIMS-AGGREGATE.md`
+- verify once per cluster where possible
+- keep per-doc claim files for traceability
 
 ---
 
@@ -335,12 +341,20 @@ Optional final summary:
 # Docs Feed Summary
 
 ## Docs Processed
-| Doc | Class | Freshness | Claims | Verified | Contradicted | Obsolete |
-|---|---|---|---:|---:|---:|---:|
+| Doc | Class | Freshness | Claims | Verified | Contradicted | Target Design Only | Historical Intent | Obsolete |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+
+## Multi-Doc Aggregation
+| Area | Aggregate Used? | Aggregate File | Notes |
+|---|---|---|---|
 
 ## Reconstruction Changes
 | Artifact | Change | Reason |
 |---|---|---|
+
+## Target Design Only Claims
+| Claim | Source | Why Not Current-State Fact | Revisit Trigger |
+|---|---|---|---|
 
 ## Reference Design Impact
 | Claim | Decision | Notes |
@@ -354,5 +368,6 @@ Optional final summary:
 - docs feed hypotheses, evidence decides
 - late docs can improve search, not bypass verification
 - doc intent and current implementation are separate layers
+- `Target Design Only` claims must stay visible and separate from current-state design
 - stale docs are useful if they explain why drift exists
 - claim-level verification prevents narrative capture

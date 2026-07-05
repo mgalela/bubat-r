@@ -51,3 +51,25 @@ Use compact signal tags:
 
 - `[subtree]`
 - `[subtree]`
+
+## Export Decision Summary
+
+Fill after Stage J.
+
+### Selected / Materialized
+
+| Subtree | Why Selected | Evidence / Trigger | Output Path |
+|---|---|---|---|
+| `[path]` | runtime/ownership/contradiction boundary | `artifact or path:line` | `<subtree>/AGENTS.md` |
+
+### Deferred
+
+| Subtree | Why Deferred | Covered By | Revisit Trigger |
+|---|---|---|---|
+| `[path]` | thin entrypoint / helper-only / low-value local doc | `parent doc or sibling doc` | contradiction / growth / change hotspot |
+
+### Rejected
+
+| Subtree | Why Rejected | Notes |
+|---|---|---|
+| `[path]` | no durable boundary | `[note]` |

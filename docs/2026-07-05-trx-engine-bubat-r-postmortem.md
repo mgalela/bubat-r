@@ -4,11 +4,15 @@ Date: `2026-07-05`
 
 ## 1. Goal
 
-Evaluate actual run behavior vs expected BUBAT-R workflow.
+Evaluate full BUBAT-R workflow against real target repo, including:
+- main reconstruction stages
+- Stage I gap deepening
+- Stage J DOCR export
+- late-doc feed overlay
 
 ## 2. Expected Workflow
 
-Expected path for fuller BUBAT-R evaluation:
+Expected path:
 
 ```text
 T0 optional takeover viability
@@ -24,7 +28,7 @@ T0 optional takeover viability
 → J DOCR materialization when needed
 ```
 
-Optional overlays:
+Optional overlays exercised in this test:
 - `R` research orchestration
 - `L` late docs feed
 - takeover overlay
@@ -34,165 +38,185 @@ Optional overlays:
 
 Executed:
 - created `.ast-index.yaml`
-- `ast-index rebuild`
+- `ast-index rebuild` / stats / structural search
 - copied reconstruction templates
-- static first-pass discovery
-- partial takeover viability checks
-- `go build ./...`
-- `go test ./engine/... ./handler/... ./client/... -count=1`
-- wrote:
-  - `00-takeover-viability.md`
-  - `01-evidence-catalog.md`
-  - `02-coverage-ledger.md`
-  - `03-main-spine.md`
-  - `04-runtime-map.md`
+- static discovery + targeted source reads
+- takeover viability first pass
+- Stage A–H artifacts
+- Stage I loop on transaction dispatch and flow outcome semantics
+- research memos under `reconstruction/research/`
+- late-doc feed for:
+  - `doc/panduan-integrasi.md`
+  - `doc/upstream-contract-matrix.md`
+  - `doc/runbook/asyncq-performance-tuning.md`
+- Stage J DOCR export into target repo root/selected subtrees
+- sample tests:
+  - `go test ./handler/... ./registration/... ./requestlog/... -count=1`
+  - `go test ./requestlog/... ./internal/txnasynq/... -count=1`
+  - `go test ./engine/broker/... -count=1`
 
-Not executed:
-- Stage C
-- Stage D
-- Stage E
-- Stage F
-- Stage G
-- Stage H
-- Stage I
-- Stage J
-- research overlay command
-- gap command
-- export docr command
+Wrote / updated:
+- full `reconstruction/00..13`
+- `reconstruction/gaps/GAP-001-transaction-dispatch.md`
+- `reconstruction/research/*.md`
+- `reconstruction/docs-feed/*.md`
+- target-repo `AGENTS.md` root + selected child docs
 
-## 4. Stage-by-Stage Status
+## 4. Final Stage Status
 
-| Stage | Expected | Actual | Verdict |
-|---|---|---|---|
-| T0 | viability check | partial | Partial |
-| A | evidence harvest | ran | Done-ish first pass |
-| B | runtime map | ran | Done-ish first pass |
-| C | behavior spine | not run | Missing |
-| D | ownership map | not run | Missing |
-| E | domain reconstruction | not run | Missing |
-| F | contract map | not run | Missing |
-| G | component decomposition | not run | Missing |
-| H | reference design | not run | Missing |
-| I | gap deepening | not run | Missing |
-| J | DOCR | not run | Missing |
-| R | research memo overlay | not run | Missing |
+| Stage | Actual | Verdict |
+|---|---|---|
+| T0 | ran | Done |
+| A | ran | Done |
+| B | ran | Done |
+| C | ran | Done |
+| D | ran | Done |
+| E | ran | Done |
+| F | ran | Done |
+| G | ran | Done |
+| H | ran | Done |
+| I | ran | Done |
+| J | ran | Done |
+| R | ran | Done |
+| L | ran | Done |
+| D0-D4 | ran as part of J refresh | Done |
 
-## 5. Questions raised by evaluation
+Source of truth:
+- `../../kdmp/jiel/tools/trx-engine/reconstruction/00-workflow-status.md`
+
+## 5. What BUBAT-R proved in this run
 
 ### Q1. Did BUBAT-R create structured DOCR?
-No.
+Yes.
 
-Reason:
-- Stage J not run
-- `bubat-r export docr` not run
-- no root/child `AGENTS.md` generated in target repo
+Generated:
+- `AGENTS.md`
+- `handler/AGENTS.md`
+- `worker/flat/AGENTS.md`
+- `worker/flow/AGENTS.md`
+- `internal/outbox/AGENTS.md`
+- `internal/txnasynq/AGENTS.md`
+- `requestlog/AGENTS.md`
+- `engine/broker/AGENTS.md`
+
+Why these only:
+- they scored as durable boundaries
+- they are runtime / ownership / contract / contradiction-heavy areas
+- lower-value or thin entrypoint areas were deferred
 
 ### Q2. Did BUBAT-R perform codebase research?
-Yes, but only first-pass discovery research.
+Yes.
 
-What happened:
-- structural scan via `ast-index`
-- targeted grep for runtime/routes/queue points
-- reads on core files
-- synthesis into evidence/runtime artifacts
+Produced focused memos:
+- `reconstruction/research/2026-07-05-how-v1-transactions-dispatches.md`
+- `reconstruction/research/2026-07-05-flow-outcome-semantics-and-requestlog.md`
+- `reconstruction/research/2026-07-05-requestlog-read-model-and-archive.md`
 
-What did not happen:
-- dedicated `reconstruction/research/*.md` memo
-- parallel research orchestration overlay
-- focused question-driven deepening
+Research was not only discovery.
+It progressed into targeted contradiction deepening.
 
-### Q3. Why no GAP docs?
-Because Stage I not run.
+### Q3. Did BUBAT-R perform formal gap deepening?
+Yes.
 
-Important distinction:
-- gap signals existed in `02-coverage-ledger.md`
-- formal gap dossiers under `gaps/GAP-*.md` were not created
+Produced:
+- `reconstruction/gaps/GAP-001-transaction-dispatch.md`
 
-## 6. Gaps that already existed but were not promoted
+Gap loop reached stop condition with durable contradiction, not missing evidence only.
 
-Observed gap candidates from coverage ledger:
-- exact dispatch path for `/v1/transactions`
-- webhook → correlation → settle write path
-- flow saga writer ownership
-- accrual runtime role
-- broker contract semantics
+### Q4. Did late docs override reconstruction?
+No.
 
-These were valid Stage I candidates.
+Late docs were handled as claim feeds.
+Result:
+- strengthened route/auth/runtime confidence
+- one normative claim stayed target-design only
+- no hard-evidence contradiction was erased
 
-## 7. What worked
+## 6. Most important finding
 
-- first-pass template copy worked
-- `ast-index` workflow fit repo shape well
-- runtime units discovered quickly
-- major persistence surfaces discovered quickly
-- build viability proven
-- sample unit/build test viability proven
-- centralized artifacts written to target repo as designed
+Main repo-level contradiction found:
+- flow compensated/partial outcomes can end with parent outbox `settled`
+- request-log reconciler maps `settled -> applied`
+- hot read API and cold archive read API return stored status directly
+- flow timeout path returns HTTP `pending` but no matching `requestlog.Pending` emit was found
 
-## 8. What did not work well
+Impact:
+- request-log/read-model can surface `applied` for compensated/degraded flow outcomes
+- readiness verdict stays `Not Ready`
 
-- no explicit stage status tracker; easy to over-read progress
-- no formal signal in target repo showing run stopped at Stage B
-- no automatic promotion from coverage gap list to formal `GAP-*.md`
-- no research memo artifact, so discovery work looked informal
-- no DOCR output, which can be mistaken as missing capability instead of not-yet-run stage
+This was strong result for BUBAT-R test because workflow did not stop at inventory; it found cross-subtree semantic drift.
 
-## 9. Root process issue
+## 7. Final verdict on target repo
 
-Main issue not in evidence model.
-Main issue in **run-state visibility**.
+From `13-readiness-verdict.md`:
 
-BUBAT-R has strong workflow model, but test run lacked explicit artifact saying:
-- which stages ran
-- which stages did not run
-- which optional overlays did not run
-- why some outputs are absent by design
+```text
+Coverage Verdict: Fail
+Readiness Verdict: Not Ready
+```
 
-This caused ambiguity:
-- absence of DOCR looked like feature gap
-- absence of GAP docs looked like missed analysis
-- absence of research memo looked like no research happened
+Reason:
+- unresolved contradiction in flow request-log/read-model semantics
 
-## 10. Corrective change chosen
+This means run reached real architectural decision value, not only documentation output.
 
-Added workflow-stage checklist template:
-- `templates/hard-evidence-reconstruction/00-workflow-status.md`
+## 8. What worked well
 
-Purpose:
-- track stage progress explicitly
-- show highest completed stage
-- show overlay usage
-- show why outputs are absent
+- Stage tracker solved prior run-state ambiguity
+- full A–H flow is workable on real Go service repo
+- Stage I can isolate and close on contradiction, not only unknowns
+- Stage J DOCR export useful and selective, not doc explosion
+- late-doc overlay preserved evidence-first discipline
+- root + child docs carry ambiguity forward instead of hiding it
+- target repo got durable local context near code
 
-## 11. Recommended next product improvements
+## 9. What still did not work perfectly
+
+- critical coverage summary still coarse; contradiction dominates but metric presentation stays simple
+- Stage J remains manual/materialized, not auto-triggered policy
+- docs-feed artifacts are useful but can still be verbose for small doc sets
+- provider-specific broker semantics still outside repo boundary; workflow can only mark partial, not close
+- deploy-manifest/prod-topology proof remained partial in this repo-focused run
+
+## 10. Product/process lessons
+
+### Confirmed good decisions
+1. `00-workflow-status.md` mandatory
+2. Stage I gap dossier formalization mandatory
+3. DOCR export should stay selective by boundary scoring
+4. late docs must stay claim-by-claim, never narrative-trust mode
+
+### New evidence from this run
+1. distributed `AGENTS.md` becomes high-value when contradiction spans multiple subtrees
+2. request-log / read-model areas deserve child docs even when initially deferred if Stage I raises them into critical path
+3. thin entrypoint folders like `cmd/trx-flow-worker/` do not always need child docs if parent runtime doc already carries context well
+
+## 11. Recommended BUBAT-R improvements after this fuller run
 
 High priority:
-1. always initialize `00-workflow-status.md` on run
-2. update it whenever stage advances or stops
-3. mark optional overlays `Not Run` explicitly
-4. if behavior coverage stays low, recommend `bubat-r gap` explicitly in status artifact
+1. generate Stage I contradiction summary block automatically into readiness verdict
+2. add explicit Stage J export report showing selected vs deferred subtrees and why
+3. add docs-feed claim aggregation helper when multiple docs hit same area
+4. surface “target design only” claims clearly in docs-feed summary and maybe root status output
 
 Medium priority:
-1. auto-create stub `reconstruction/research/` memo when discovery is substantial
-2. auto-create candidate GAP rows or starter files when weight-5 partial gaps remain after Stage B/C
-3. surface “DOCR not run yet” in status output
+1. compute critical coverage more formally when contradiction exists
+2. auto-suggest candidate child docs after Stage H based on `docr-candidates.md`
+3. add artifact for “selection rationale” during DOCR export
 
-## 12. Final verdict
+## 12. Final evaluation of BUBAT-R from this run
 
 BUBAT-R test on `trx-engine` proved:
-- Stage A/B first-pass workflow works
-- codebase discovery works
-- runtime mapping works
-- artifact writing works
-
-BUBAT-R test on `trx-engine` did **not** yet prove:
-- behavior/ownership reconstruction quality
-- gap deepening loop behavior
-- structured DOCR generation
-- research overlay behavior
-- reference design closure
+- discovery path works
+- later-stage workflow works
+- gap deepening works
+- DOCR export works
+- late-doc overlay works
+- evidence-first model can find meaningful repo-level contradiction
 
 So evaluation verdict:
-- **workflow partially exercised**
-- **core discovery path validated**
-- **later-stage workflow still untested in this run**
+- **workflow fully exercised through Stage J + overlays**
+- **core reconstruction path validated**
+- **gap/deepening and DOCR capabilities validated**
+- **late-doc feeding model validated**
+- **remaining issue is target-system contradiction, not BUBAT-R workflow incompleteness**

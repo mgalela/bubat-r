@@ -17,13 +17,27 @@ Next Loop: [gap-id or stop]
 
 | Gate | Target | Current | Status |
 |---|---:|---:|---|
-| Critical coverage | `>= 90%` | `NN%` | Pass/Fail |
+| Critical coverage | `>= 90%` | `NN% or contradiction summary` | Pass/Fail |
 | Unknown weight-5 | `0` | `N` | Pass/Fail |
 | Unresolved Contradicted | `0` | `N` | Pass/Fail |
 | Unresolved Critical Risk | `0` | `N` | Pass/Fail |
 | Changed data writers mapped | yes | yes/no | Pass/Fail |
 | Changed flow failure paths traced | yes | yes/no | Pass/Fail |
 | Build/check/test viability | pass or accepted risk | pass/fail/blocked | Pass/Fail/Accepted Risk |
+
+## Stage I Contradiction Summary
+
+Write this section whenever Stage I produced any `Contradicted` result.
+If none, say `No material contradiction recorded.`
+
+| ID | Contradiction | Source Gap / Artifact | User-Facing Impact | Must Fix Before | Status |
+|---|---|---|---|---|---|
+| `C-001` | `[summary]` | `gaps/GAP-...`, `12-drift-ambiguity-report.md` | `[what can go wrong]` | major change / release / handoff | Open / Accepted / Resolved |
+
+Rules:
+- summarize contradictions, do not restate full gap dossier
+- include user-facing or operator-facing impact, not code-only wording
+- if contradiction exists, critical coverage should normally fail unless explicitly risk-accepted
 
 ## Blocking Risks
 

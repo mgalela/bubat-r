@@ -104,6 +104,7 @@ Hard override create:
 Output:
 - selected subtree list
 - skipped subtree list with reason if relevant
+- `reconstruction/docr-export-report.md` with selected / deferred / rejected rationale
 - optional refresh back into `docr-candidates.md` status: `Materialized / Deferred / Rejected`
 
 ---
@@ -172,6 +173,7 @@ Minimum checks:
 - listed child file exists
 - evidence anchors still point to real files/symbols
 - stale links removed
+- export report and `docr-candidates.md` do not disagree on selected vs deferred areas
 
 ---
 

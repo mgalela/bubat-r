@@ -19,6 +19,7 @@ reconstruction/13-readiness-verdict.md
 ## Rule
 
 Coverage pass does not imply readiness pass.
+If Stage I produced contradictions, summarize them directly in `13-readiness-verdict.md` instead of leaving them only in gap/drift artifacts.
 
 Example:
 

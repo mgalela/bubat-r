@@ -12,6 +12,8 @@ Run mode: `first-pass / takeover / gap-deepening / docr-refresh / mixed`
 - DOCR status: `Not Run / Partial / Complete`
 - Research overlay used: `Yes / No`
 - Gap loop used: `Yes / No`
+- Late docs overlay used: `Yes / No`
+- Late docs target-design-only claims: `N / Not Run`
 
 ## Stage Checklist
 
@@ -26,8 +28,8 @@ Run mode: `first-pass / takeover / gap-deepening / docr-refresh / mixed`
 | F | Contract Surface Map | Not Run / In Progress / Done / Blocked | `08-contract-map.md` | |
 | G | Component Decomposition | Not Run / In Progress / Done / Blocked | `09-component-map.md`, `10-code-trace-map.md` | |
 | H | Reference Design Decision | Not Run / In Progress / Done / Blocked | `11-reference-design.md`, `12-drift-ambiguity-report.md` | |
-| I | Critical Gap Deepening | Not Run / In Progress / Done / Blocked | `gaps/GAP-*.md`, `13-readiness-verdict.md` | |
-| J | Hierarchical Context Docs | Not Run / In Progress / Done / Blocked | `AGENTS.md`, child `AGENTS.md` | |
+| I | Critical Gap Deepening | Not Run / In Progress / Done / Blocked | `gaps/GAP-*.md`, `13-readiness-verdict.md` | contradiction summary must be reflected in verdict when present |
+| J | Hierarchical Context Docs | Not Run / In Progress / Done / Blocked | `AGENTS.md`, child `AGENTS.md`, `docr-export-report.md` | |
 | R | Research Orchestration Overlay | Not Run / In Progress / Done / Blocked | `research/*.md` | optional |
 | L | Late Docs Feed Overlay | Not Run / In Progress / Done / Blocked | `docs-feed/*.md` | optional |
 | D0-D4 | DOCR Overlay Refresh Steps | Not Run / In Progress / Done / Blocked | root/child `AGENTS.md` refreshed | optional |
@@ -61,7 +63,7 @@ Mark stage `Blocked` when:
 
 | Gap | Status | Weight | Next Action |
 |---|---|---:|---|
-| `[gap]` | Open / Partial / Covered / Blocked | 5 | `[next]` |
+| `[gap]` | Open / Partial / Covered / Contradicted / Blocked | 5 | `[next]` |
 
 ## Next Recommended Step
 
