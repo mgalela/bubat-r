@@ -23,6 +23,7 @@ Use BUBAT-R for:
 - `docs/RFC-docr-target-repo.md` — RFC for hierarchical context docs in analyzed target repos
 - `templates/hard-evidence-reconstruction/` — artifact templates
 - `templates/hierarchical-context-docr/` — root/child `AGENTS.md` starter templates for target repos
+- `templates/docs-audit-framework/` — docs audit report, scoring rubric, PR sync check templates
 
 ## Install
 
@@ -153,6 +154,14 @@ Then run Stage I loop from `workflow.md`.
 ### 4. Late/stale docs feeding
 
 Use when user finds docs after coverage/gaps exist.
+
+Related docs-audit templates:
+
+```text
+bubat-r/templates/docs-audit-framework/docs-audit-report.md
+bubat-r/templates/docs-audit-framework/docs-audit-rubric.yaml
+bubat-r/templates/docs-audit-framework/docs-sync-pr-check.yml
+```
 
 ```text
 bubat-r feed docs docs/ARCHITECTURE.md for checkout-ledger max 3
