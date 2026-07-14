@@ -38,7 +38,7 @@ Generated from BUBAT-R Stage K.
 | `diagrams/read-path-{topic}.puml`   | Dataflow (topic) | Per topik, satu flow per file (navigable)                              | 05-behavior-spine                   |
 | `diagrams/write-path-{topic}.puml`  | Dataflow (topic) | Per topik                                                              | 05-behavior-spine                   |
 | `diagrams/README.md`                | Index            | Index diagram: file, purpose, input artifact                           | —                                   |
-| png (generated)                     | Image            | PNG generated dari puml di atas                                        | —                                   |
+| `diagrams/png/*.png`                | Image            | PNG generated dari setiap `.puml` — layout top-to-bottom, readable tanpa zoom horizontal | —  |
 
 Write output to this stage directory first, then after stage done, copy to target repo:
 
@@ -91,7 +91,28 @@ ComponentName\nfilename:function()\n(line:NNN)
 
 dari `10-code-trace-map.md`. Bila line belum diketahui, tulis `(line:?)` — jangan dihapus.
 
-### 5. C4 PlantUML Syntax
+### 5. Layout Direction (WAJIB)
+
+Semua diagram WAJIB menggunakan layout **top-to-bottom** agar PNG readable tanpa zoom horizontal berlebihan:
+
+```puml
+@startuml ...
+top to bottom direction
+' ... skinparam ...
+```
+
+Aturan arrow direction:
+
+| Konteks | Arrow | Alasan |
+|---------|-------|--------|
+| Flow utama (request → service → DB → response) | `-down->` | stack vertikal |
+| Branch YES path (path utama) | `-down->` | terus ke bawah |
+| Branch NO / parallel path | `-right->` atau `-left->` | horizontal hanya untuk cabang |
+| Antar flow section di consolidated file | `-down->` atau separator `rectangle` | jangan pakai `-right->` antar flow |
+
+Consolidated dataflow (`*-dataflow.puml`): setiap flow section disusun **ke bawah**, bukan ke samping. Gunakan `rectangle` header per flow sebagai anchor, sambung dengan `fN_title -[hidden]down-> fM_title` bila perlu paksa urutan vertikal antar flow.
+
+### 6. C4 PlantUML Syntax
 
 Component diagrams:
 
@@ -104,7 +125,7 @@ Container diagram:
 - Gunakan `rectangle` untuk services, `database` untuk storage
 - Satu sistem boundary: `rectangle "Platform" as boundary #ffffff {}`
 
-### 6. Color Palette (enforced)
+### 7. Color Palette (enforced)
 
 | Elemen                       | Kode Warna | Konteks                                 |
 | ---------------------------- | ---------- | --------------------------------------- |
@@ -117,7 +138,7 @@ Container diagram:
 | Write-path flow header       | `#E8F5E9`  | `rectangle "Flow N: ..." as fN #E8F5E9` |
 | Aspirasional (unverified)    | `#FFE0B2`  | belum ada bukti dari rekonstruksi       |
 
-### 7. Branch Logic Visible di Dataflow
+### 8. Branch Logic Visible di Dataflow
 
 Setiap branching yang mengakibatkan different data path WAJIB divisualisasikan eksplisit:
 
@@ -129,7 +150,7 @@ branchN -right-> pathB : "NO → ..."
 
 Bukan hanya sequential arrows. Minimal: setiap `if/else` yang memilih backend berbeda harus tampak.
 
-### 8. Dual Granularity Output (wajib)
+### 9. Dual Granularity Output (wajib)
 
 Selalu produce dua layer:
 
@@ -144,6 +165,7 @@ Template structure:
 
 ```puml
 @startuml {project}-c4-container
+top to bottom direction
 ' ... skinparam ...
 actor "User\n[Role]" as user #08427B
 rectangle "Platform Name" as boundary #ffffff {
@@ -177,6 +199,7 @@ Template structure:
 
 ```puml
 @startuml {project}-c4-component-{svc}
+top to bottom direction
 ' ... skinparam ...
 actor "User / APISIX" as client #08427B
 rectangle "service-name\n[Tech]" as container #438DD5 {
@@ -188,7 +211,7 @@ rectangle "service-name\n[Tech]" as container #438DD5 {
     component "PoolName\nfilename:init_fn()\nconnection strategy" as pool
   }
 }
-database "ExternalDB" as db #438DD5
+rectangle "ExternalDB" as db #438DD5
 client -down-> grp : "HTTP /api/prefix/*"
 h_name -down-> pool
 pool -down-> db
@@ -206,16 +229,21 @@ end note
 Structure per flow:
 
 ```puml
+@startuml {project}-read-path-dataflow
+top to bottom direction
+' ... skinparam ...
+
 ' ── Flow N: Name ──
 rectangle "Flow N: {Name}" as fN_title #{E3F2FD|E8F5E9}
 
-actor_or_src -right-> gateway : "METHOD /path"
+actor_or_src -down-> gateway : "METHOD /path"
 note right: request schema
-gateway -right-> svc : proxy
-svc -right-> branch : "[BRANCH] condition?"
+gateway -down-> svc : proxy
+rectangle "[BRANCH]" as branch #FFF3E0
+svc -down-> branch : "condition?"
 branch -down-> pathA : "YES → ..."
 branch -right-> pathB : "NO → ..."
-pathA -right-> db1 : "operation"
+pathA -down-> db1 : "operation"
 note right
   Policy:
   [VALIDASI] ...
@@ -223,11 +251,20 @@ note right
   [SECURITY] ⚠️ ...
   File: filename:function()
 end note
-svc -right-> result : "response schema"
+db1 -down-> result : "response schema"
+
+' ── Flow separator: paksa urutan vertikal antar flow ──
+fN_title -[hidden]down-> fM_title
+
+' ── Flow M: Name ──
+rectangle "Flow M: {Name}" as fM_title #{E3F2FD|E8F5E9}
+' ... dst
 ```
 
 ### read/write-path-{topic}.puml (per-topik)
 
+- Tambahkan `top to bottom direction` setelah `@startuml`
+- Flow progresses **top-to-bottom**: gunakan `-down->` untuk main path, `-right->` hanya untuk branch parallel
 - Satu flow lengkap dengan semua branches
 - Policy note WAJIB: [VALIDASI], [VERIFIKASI], [SECURITY], [PERFORMANCE] jika ada
 - `⚠️` inline di note bila ada risk
@@ -267,6 +304,45 @@ Bila menjalankan Stage K ulang setelah satu artifact berubah:
 | `12-drift-ambiguity-report.md` | semua files (⚠️ annotations bisa berubah)               |
 | `08-contract-map.md`           | `c4-container.puml` + per-topic path files yang relevan |
 
+## Auto-generate PNG (otomatis, tanpa perintah tambahan)
+
+Setelah semua `.puml` ditulis, agent WAJIB:
+
+1. **Detect PlantUML JAR** — cari di (urutkan):
+   - `/opt/homebrew/var/homebrew/tmp/.cellar/plantuml/*/libexec/plantuml.jar`
+   - `~/.vscode/extensions/jebbs.plantuml-*/plantuml.jar`
+   - `which plantuml` atau `brew --prefix plantuml`
+   - `find / -name "plantuml.jar" 2>/dev/null`
+   Bila tidak ditemukan, install via `brew install plantuml` atau download.
+
+2. **Generate PNG** — jalankan:
+   ```bash
+   cd STAGES/K/diagrams/
+   java -Djava.awt.headless=true -jar /path/to/plantuml.jar -tpng "*.puml" -o png/
+   ```
+
+3. **Verifikasi** — setiap file PNG:
+   - exit code = 0 (tidak ada error syntax)
+   - file size > 1000 bytes (bukan error overlay)
+   Bila ada yang gagal, perbaiki syntax `.puml` dan ulang.
+
+4. **Copy ke reconstruction** — setelah sukses:
+   ```bash
+   cp -r STAGES/K/diagrams/png/ <project>/reconstruction/diagrams/png/
+   ```
+
+### Aturan syntax agar PNG tidak error
+
+| Larangan | Contoh salah | Perbaikan |
+|----------|-------------|-----------|
+| Inline rectangle di arrow target | `src -> rectangle "X" as a #C : "label"` | Deklarasi rectangle dulu:
+`rectangle "X" as a #C`
+`src -> a : "label"` |
+| Karakter `?` di luar string (seperti `WHERE id=?`) | `WHERE id=?` | Ganti ke `WHERE id = :id` atau `BY id` |
+| `database` keyword tanpa `!include` | `database "DB" as db` | Gunakan `rectangle "DB" as db` untuk dataflow / sequence |
+| `(line:?)` di label | `(line:?)` | Ganti ke `(line:UNKNOWN)` |
+| Duplicate `@startuml` name antar file | Dua file pakai `@startuml read-path-dataflow` | Setiap file harus punya `@startuml` name unik |
+
 ## Exit Criteria
 
 - semua containers dari `04-runtime-map.md` ada di `c4-container.puml`
@@ -276,6 +352,9 @@ Bila menjalankan Stage K ulang setelah satu artifact berubah:
 - semua handler components punya line ref dari `10-code-trace-map.md` (atau explicit `?`)
 - consolidated dataflow + per-topic files keduanya ada
 - tidak ada elemen tanpa evidence trace (atau explicit `[ASPIRATIONAL]`)
+- **semua `.puml` ter-generate PNG** dan disimpan di `diagrams/png/` — otomatis (lihat section Auto-generate PNG)
+- semua PNG **tidak mengandung error overlay** — verifikasi dengan cek exit code = 0 dan file size > 1KB
+- **semua PNG readable tanpa zoom horizontal**: setiap `.puml` WAJIB punya `top to bottom direction` dan flow main-path menggunakan `-down->` (bukan `-right->`); verifikasi PNG sebelum mark done
 - `diagrams/README.md` ter-update
 - Workflow Status updated untuk Stage K
 
