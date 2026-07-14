@@ -20,6 +20,7 @@ runtime behavior > write-path > schema/migrations > tests > deploy config > read
 | H     | `STAGES/H/` | Reference Design                       |
 | I     | `STAGES/I/` | Gap Deepening, when needed             |
 | J     | `STAGES/J/` | AGENTS.md materialization, when needed |
+| K     | `STAGES/K/` | Diagram Suite, when needed             |
 
 ## Rules
 

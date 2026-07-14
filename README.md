@@ -110,6 +110,7 @@ Stage command map:
 | H Reference Design Decision | `query`, source citations, selective source reads                  |
 | I Critical Gap Deepening    | `refs`, `usages`, `callers`, `call-tree`, `query`, targeted `rg`   |
 | J Hierarchical Context Docs | `map`, `module`, `deps`, `dependents`, `api`, targeted `outline`   |
+| K Diagram Suite             | `symbol`, `outline`, `refs`, targeted `rg` (verify only)          |
 | L Late Docs Feed Overlay    | `file`, `search`, `refs`, `query`, targeted `rg`                   |
 
 ## Use Cases

@@ -24,23 +24,25 @@ bubat-r run [target-path] [--max-hours N]
 
 ## Stage → Output Files
 
-| Stage | Write here first          | Copy to target after done                        |
-|-------|---------------------------|--------------------------------------------------|
-| A     | `STAGES/A/`               | `<target>/reconstruction/00–03 + docr-candidates` |
-| B     | `STAGES/B/`               | `<target>/reconstruction/04 + 02`                |
-| C     | `STAGES/C/`               | `<target>/reconstruction/05 + 02`                |
-| D     | `STAGES/D/`               | `<target>/reconstruction/06 + 02`                |
-| E     | `STAGES/E/`               | `<target>/reconstruction/07`                     |
-| F     | `STAGES/F/`               | `<target>/reconstruction/08`                     |
-| G     | `STAGES/G/`               | `<target>/reconstruction/09, 10`                 |
-| H     | `STAGES/H/`               | `<target>/reconstruction/11, 12`                 |
-| I     | `STAGES/I/`               | `<target>/reconstruction/gaps/, 13, 02, 11, 12`  |
-| J     | `STAGES/J/`               | `<target>/AGENTS.md`, subtree `AGENTS.md`, `reconstruction/docr-export-report` |
+| Stage | Write here first | Copy to target after done                                                      |
+| ----- | ---------------- | ------------------------------------------------------------------------------ |
+| A     | `STAGES/A/`      | `<target>/reconstruction/00–03 + docr-candidates`                              |
+| B     | `STAGES/B/`      | `<target>/reconstruction/04 + 02`                                              |
+| C     | `STAGES/C/`      | `<target>/reconstruction/05 + 02`                                              |
+| D     | `STAGES/D/`      | `<target>/reconstruction/06 + 02`                                              |
+| E     | `STAGES/E/`      | `<target>/reconstruction/07`                                                   |
+| F     | `STAGES/F/`      | `<target>/reconstruction/08`                                                   |
+| G     | `STAGES/G/`      | `<target>/reconstruction/09, 10`                                               |
+| H     | `STAGES/H/`      | `<target>/reconstruction/11, 12`                                               |
+| I     | `STAGES/I/`      | `<target>/reconstruction/gaps/, 13, 02, 11, 12`                                |
+| J     | `STAGES/J/`      | `<target>/AGENTS.md`, subtree `AGENTS.md`, `reconstruction/docr-export-report` |
+| K     | `STAGES/K/`      | `<target>/reconstruction/diagrams/`                                            |
 
 ## Status Rule
 
 Absent output must be explained by `00-workflow-status.md`.
 Examples:
+
 - Stage not run yet
 - Stage blocked by missing runtime/secrets/access
 - Optional overlay not used
