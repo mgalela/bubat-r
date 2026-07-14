@@ -15,7 +15,7 @@ Use BUBAT-R for:
 
 ## Core Docs
 
-- `workflow.md` — hard-evidence reconstruction workflow
+- `docs/workflow.md` — hard-evidence reconstruction workflow
 - `overlays/takeover.md` — takeover readiness overlay
 - `overlays/late-document-feeding.md` — late/stale docs feeding overlay
 - `overlays/docr-materialization.md` — DOCR materialization/update overlay for target repos
@@ -23,6 +23,7 @@ Use BUBAT-R for:
 - `docs/RFC-docr-target-repo.md` — RFC for hierarchical context docs in analyzed target repos
 - `templates/hard-evidence-reconstruction/` — artifact templates
 - `templates/hierarchical-context-docr/` — root/child `AGENTS.md` starter templates for target repos
+- `templates/docs-audit-framework/` — docs audit report, scoring rubric, PR sync check templates
 
 ## Install
 
@@ -57,10 +58,10 @@ Verify:
 ast-index version
 ```
 
-Recommended project config before first rebuild:
+Config recommended untuk repo JS/large:
 
 ```yaml
-# /path/to/project/.ast-index.yaml
+# .ast-index.yaml
 exclude:
   - node_modules
   - .svelte-kit
@@ -71,14 +72,46 @@ exclude:
   - vendor
 ```
 
+Config optional untuk monorepo scoped analysis:
+
+```yaml
+# .ast-index.yaml
+include:
+  - apps
+  - packages
+exclude:
+  - node_modules
+  - generated
+  - vendor
+```
+
 Build index:
 
 ```bash
 cd /path/to/project
-ast-index rebuild
+ast-index rebuild   # first baseline from project root
+ast-index update    # after branch switch / edits / pull
+ast-index stats     # verify index health
 ```
 
 Use `ast-index update` after edits, pulls, or branch switches.
+
+Stage command map:
+
+| Stage                       | Primary `ast-index` commands                                       |
+| --------------------------- | ------------------------------------------------------------------ |
+| A Evidence Harvest          | `stats`, `map`, `conventions`, `file`, `search`, `symbol`, `query` |
+| B Runtime Map               | `file`, `map`, `module`, `deps`, `dependents`, `imports`           |
+| C Behavior Spine            | `search`, `refs`, `usages`, `callers`, `call-tree`, `outline`      |
+| D Ownership Map             | `refs`, `usages`, `callers`, `outline`, `query`                    |
+| E Domain Reconstruction     | `module`, `deps`, `dependents`, `module-route`, `api`              |
+| F Contract Surface Map      | `search`, `refs`, `usages`, `api`, `imports`, `agrep`              |
+| G Component Decomposition   | `outline`, `symbol`, `class`, `implementations`, `hierarchy`       |
+| H Reference Design Decision | `query`, source citations, selective source reads                  |
+| I Critical Gap Deepening    | `refs`, `usages`, `callers`, `call-tree`, `query`, targeted `rg`   |
+| J Hierarchical Context Docs | `map`, `module`, `deps`, `dependents`, `api`, targeted `outline`   |
+| K Diagram Suite             | `symbol`, `outline`, `refs`, targeted `rg` (verify only)          |
+| L Late Docs Feed Overlay    | `file`, `search`, `refs`, `query`, targeted `rg`                   |
 
 ## Use Cases
 
@@ -96,20 +129,6 @@ Manual equivalent:
 cp -R bubat-r/templates/hard-evidence-reconstruction /path/to/project/reconstruction
 cd /path/to/project
 ast-index rebuild
-```
-
-Then fill artifacts in order:
-
-```text
-01-evidence-catalog
-02-coverage-ledger
-03-main-spine
-04-runtime-map
-05-behavior-spine
-06-ownership-map
-...
-11-reference-design
-12-drift-ambiguity-report
 ```
 
 ### 2. Takeover assessment
@@ -153,6 +172,14 @@ Then run Stage I loop from `workflow.md`.
 ### 4. Late/stale docs feeding
 
 Use when user finds docs after coverage/gaps exist.
+
+Related docs-audit templates:
+
+```text
+bubat-r/templates/docs-audit-framework/docs-audit-report.md
+bubat-r/templates/docs-audit-framework/docs-audit-rubric.yaml
+bubat-r/templates/docs-audit-framework/docs-sync-pr-check.yml
+```
 
 ```text
 bubat-r feed docs docs/ARCHITECTURE.md for checkout-ledger max 3
@@ -225,47 +252,3 @@ bubat-r export docr [for <area>] [max-depth <n>]
 ```
 
 `bubat-r run` and `bubat-r feed bubat` are wired through BUBAT trigger routing. `bubat-r research` is proposed as overlay command contract. Other commands above remain command contracts for now.
-
-## Output Location
-
-BUBAT-R writes output into target project:
-
-```text
-reconstruction/
-  01-evidence-catalog.md
-  02-coverage-ledger.md
-  03-main-spine.md
-  04-runtime-map.md
-  05-behavior-spine.md
-  06-ownership-map.md
-  07-domain-map.md
-  08-contract-map.md
-  09-component-map.md
-  10-code-trace-map.md
-  11-reference-design.md
-  12-drift-ambiguity-report.md
-  13-readiness-verdict.md
-  docr-export-report.md
-  gaps/
-    GAP-xxx-*.md
-  docs-feed/
-    DOC-xxx-*.md
-    CLAIMS-AGGREGATE.md
-    docs-feed-summary.md
-```
-
-Optional Stage J / DOCR output additionally writes hierarchical context docs near code:
-
-```text
-AGENTS.md
-apps/AGENTS.md
-packages/AGENTS.md
-services/<area>/AGENTS.md
-```
-
-EventStorming support additionally uses:
-
-- `05-behavior-spine.md` for candidate `.es` flows, commands, events, policies, read models, and hotspots
-- `06-ownership-map.md` for aggregate/event/projection ownership
-- `07-domain-map.md` for bounded-context event ownership
-- `08-contract-map.md` for event/projection/API contract surfaces

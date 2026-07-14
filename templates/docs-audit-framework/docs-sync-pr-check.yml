@@ -1,0 +1,95 @@
+name: docs-sync-pr-check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  detect-doc-impact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect changed files
+        id: changed
+        run: |
+          BASE_REF="${{ github.base_ref }}"
+          git fetch origin "$BASE_REF" --depth=1
+          git diff --name-only "origin/$BASE_REF...HEAD" > changed-files.txt
+          echo "changed_count=$(wc -l < changed-files.txt | tr -d ' ')" >> "$GITHUB_OUTPUT"
+          echo "Changed files:"
+          cat changed-files.txt
+
+      - name: Detect documentation impact
+        id: impact
+        run: |
+          NEEDS_DOCS=false
+          AREAS=""
+
+          if grep -Eq '(^|/)(routes|controllers|handlers|api)/' changed-files.txt; then
+            NEEDS_DOCS=true
+            AREAS="$AREAS api"
+          fi
+
+          if grep -Eq '(^|/)(db|migrations|schema|prisma)/' changed-files.txt; then
+            NEEDS_DOCS=true
+            AREAS="$AREAS data"
+          fi
+
+          if grep -Eq '(^|/)(workers|jobs|queues|cron|scheduler)/' changed-files.txt; then
+            NEEDS_DOCS=true
+            AREAS="$AREAS ops"
+          fi
+
+          if grep -Eq '(^|/)(auth|security|tenant)/' changed-files.txt; then
+            NEEDS_DOCS=true
+            AREAS="$AREAS security"
+          fi
+
+          if grep -Eq '(^|/)(Dockerfile|docker-compose|wrangler|terraform|pulumi|\.github/workflows)/' changed-files.txt; then
+            NEEDS_DOCS=true
+            AREAS="$AREAS deploy"
+          fi
+
+          echo "needs_docs=$NEEDS_DOCS" >> "$GITHUB_OUTPUT"
+          echo "areas=$AREAS" >> "$GITHUB_OUTPUT"
+          echo "Needs docs: $NEEDS_DOCS"
+          echo "Areas:$AREAS"
+
+      - name: Check docs touched
+        if: steps.impact.outputs.needs_docs == 'true'
+        id: docs_touched
+        run: |
+          if grep -Eq '(^README\.md$|^docs/|\.md$)' changed-files.txt; then
+            echo "docs_touched=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "docs_touched=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Fail when docs impact missing docs update
+        if: steps.impact.outputs.needs_docs == 'true' && steps.docs_touched.outputs.docs_touched == 'false'
+        run: |
+          echo "Docs impact detected for areas:${{ steps.impact.outputs.areas }}"
+          echo "No docs files changed. Update docs or add override label/docs-exempt with reason."
+          exit 1
+
+      - name: Summary
+        run: |
+          echo "## Docs Sync Check" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Changed files: ${{ steps.changed.outputs.changed_count }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Needs docs: ${{ steps.impact.outputs.needs_docs }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Areas: ${{ steps.impact.outputs.areas }}" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ steps.impact.outputs.needs_docs }}" = "true" ]; then
+            echo "- Docs touched: ${{ steps.docs_touched.outputs.docs_touched }}" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  optional-bubat-r-audit:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Hook point for future bubat-r audit command"
+          echo "Example contract: bubat-r audit docs --base origin/${{ github.base_ref }} --head HEAD"

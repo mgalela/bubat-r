@@ -1,0 +1,172 @@
+version: 1
+name: docs-audit-rubric
+purpose: score and classify project documentation against implemented code
+
+source_of_truth_order:
+  - runtime_behavior
+  - write_path_code
+  - schema_migrations_contracts
+  - representative_tests
+  - deploy_infra_ops_config
+  - read_path_code
+  - existing_docs_naming_comments
+
+status_values:
+  inventory:
+    - valid
+    - suspect
+    - stale
+    - orphan
+    - missing
+  coverage:
+    - full
+    - partial
+    - low
+    - none
+  confidence:
+    - high
+    - medium
+    - low
+  evidence_confidence:
+    - Observed
+    - Inferred
+    - Unknown
+    - Contradicted
+    - Assumed
+  mismatch_class:
+    - incorrect
+    - outdated
+    - incomplete
+    - missing
+    - unverifiable
+    - duplicated_conflicting
+  severity:
+    - high
+    - medium
+    - low
+
+domains:
+  - key: overview
+    label: Project overview
+    checks:
+      - repo purpose clear
+      - quick start exists
+      - prerequisites match code
+      - links resolve
+  - key: setup
+    label: Setup and local development
+    checks:
+      - package manager correct
+      - runtime versions documented
+      - install command valid
+      - env vars documented
+      - migration seed steps documented
+      - run build test commands valid
+  - key: architecture
+    label: Architecture
+    checks:
+      - runtime units documented
+      - boundaries match deployment reality
+      - data flows represented
+      - external integrations represented
+      - async jobs workers schedulers represented
+  - key: api
+    label: API or interface
+    checks:
+      - route paths correct
+      - methods correct
+      - auth behavior correct
+      - request response shape current
+      - webhook or event contracts documented
+      - error semantics documented
+  - key: data
+    label: Data layer
+    checks:
+      - entities documented
+      - ownership documented
+      - relations documented
+      - schema migrations reflected
+      - storage backends accurate
+  - key: ops
+    label: Deployment and operations
+    checks:
+      - ci cd reflects repo
+      - environments documented
+      - secret handling documented
+      - logging metrics tracing signals documented
+      - rollback runbook documented
+  - key: modules
+    label: Feature or module docs
+    checks:
+      - major modules covered
+      - current behavior documented
+      - dependencies documented
+      - limitations or risks documented
+
+scoring:
+  scale: 0-5
+  dimensions:
+    accuracy:
+      question: matches implemented code?
+      weight: 0.30
+    coverage:
+      question: covers important areas?
+      weight: 0.25
+    freshness:
+      question: reflects current repo state?
+      weight: 0.15
+    verifiability:
+      question: claims provable from repo evidence?
+      weight: 0.15
+    usability:
+      question: useful for developer or operator?
+      weight: 0.15
+  verdict_bands:
+    excellent:
+      min: 4.5
+      max: 5.0
+    usable:
+      min: 3.5
+      max: 4.49
+    risky:
+      min: 2.5
+      max: 3.49
+    rebuild_candidate:
+      min: 0.0
+      max: 2.49
+
+repair_vs_rebuild:
+  repair_when:
+    - docs structure still coherent
+    - majority of content still valid
+    - mismatches are local or patchable
+    - current audience still uses docs
+  rebuild_when:
+    - docs conflict heavily
+    - major critical domains missing
+    - structure no longer maps to codebase
+    - score mostly below 2.5
+
+action_plan_buckets:
+  - repair_now
+  - rebuild
+  - archive_deprecate
+  - governance
+
+governance_triggers:
+  - routes_or_controllers_changed
+  - schema_or_migrations_changed
+  - env_or_config_contract_changed
+  - workers_cron_queue_changed
+  - auth_tenant_security_flow_changed
+  - deploy_infra_ci_changed
+
+required_outputs:
+  - executive_summary
+  - doc_inventory
+  - coverage_map
+  - mismatch_gap_report
+  - per_doc_scoring
+  - target_docs_structure
+  - patch_plan_30_60_90
+  - governance_hooks
