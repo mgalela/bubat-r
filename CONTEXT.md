@@ -1,0 +1,36 @@
+# BUBAT-R Agent Instructions
+
+Reconstruct architecture from existing codebases using hard evidence. No assumptions from naming.
+
+## Evidence Priority
+
+runtime behavior > write-path > schema/migrations > tests > deploy config > read-path > naming
+
+## Stage Order
+
+| Stage | Path        | Description                            |
+| ----- | ----------- | -------------------------------------- |
+| A     | `STAGES/A/` | Evidence Harvest                       |
+| B     | `STAGES/B/` | Runtime Map                            |
+| C     | `STAGES/C/` | Behavior Spine                         |
+| D     | `STAGES/D/` | Ownership Map                          |
+| E     | `STAGES/E/` | Domain Map                             |
+| F     | `STAGES/F/` | Contract Map                           |
+| G     | `STAGES/G/` | Component Map                          |
+| H     | `STAGES/H/` | Reference Design                       |
+| I     | `STAGES/I/` | Gap Deepening, when needed             |
+| J     | `STAGES/J/` | AGENTS.md materialization, when needed |
+
+## Rules
+
+- Never derive boundary from folder/naming alone — require write-path or runtime evidence
+- Mark unknown as Unknown, not assumed
+- Every architecture conclusion needs file/symbol/migration citation
+- Coverage verdict and readiness verdict always separate
+- Stage G and H must not run before B+C+D are stable
+
+## Command Entry
+
+```text
+bubat-r run [target-path]
+```
