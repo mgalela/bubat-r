@@ -7,14 +7,17 @@ Status: `Draft / Reviewed / Accepted`
 ## Scope
 
 This reference design covers:
+
 - `[area]`
 
 Out of scope / unresolved:
+
 - `[area]`
 
 ## Evidence Basis
 
 Inputs:
+
 - `01-evidence-catalog.md`
 - `02-coverage-ledger.md`
 - `03-main-spine.md`
@@ -28,50 +31,51 @@ Inputs:
 
 ## Coverage Gate
 
-| Dimension | Coverage | Gate | Status |
-|---|---:|---:|---|
-| Runtime | `NN%` | 80% | Pass/Fail/Accepted Gap |
-| Behavior | `NN%` | 70% | Pass/Fail/Accepted Gap |
-| Data ownership | `NN%` | 70% | Pass/Fail/Accepted Gap |
-| Integration/contract | `NN%` | `[target]` | Pass/Fail/Accepted Gap |
+| Dimension            | Coverage |       Gate | Status                 |
+| -------------------- | -------: | ---------: | ---------------------- |
+| Runtime              |    `NN%` |        80% | Pass/Fail/Accepted Gap |
+| Behavior             |    `NN%` |        70% | Pass/Fail/Accepted Gap |
+| Data ownership       |    `NN%` |        70% | Pass/Fail/Accepted Gap |
+| Integration/contract |    `NN%` | `[target]` | Pass/Fail/Accepted Gap |
 
 ## Runtime Reference Design
 
-| Runtime Unit | Responsibility | Inbound | Outbound | Evidence |
-|---|---|---|---|---|
-| `[unit]` | `[responsibility]` | `[inbound]` | `[outbound]` | `EV-...` |
+| Runtime Unit | Responsibility     | Inbound     | Outbound     | Evidence |
+| ------------ | ------------------ | ----------- | ------------ | -------- |
+| `[unit]`     | `[responsibility]` | `[inbound]` | `[outbound]` | `EV-...` |
 
 ## Domain Reference Design
 
-| Context | Responsibility | Owned Data | Key Flows | Evidence |
-|---|---|---|---|---|
+| Context     | Responsibility     | Owned Data   | Key Flows | Evidence |
+| ----------- | ------------------ | ------------ | --------- | -------- |
 | `[context]` | `[responsibility]` | `[entities]` | `[flows]` | `EV-...` |
 
 ## Data Ownership Reference
 
-| Data Object | Authoritative Writer | Invariants | Readers | Evidence |
-|---|---|---|---|---|
-| `[entity]` | `[writer]` | `[rules]` | `[readers]` | `EV-...` |
+| Data Object | Authoritative Writer | Invariants | Readers     | Evidence |
+| ----------- | -------------------- | ---------- | ----------- | -------- |
+| `[entity]`  | `[writer]`           | `[rules]`  | `[readers]` | `EV-...` |
 
 ## Contract Reference
 
-| Contract | Producer | Consumer | Mechanism | Evidence |
-|---|---|---|---|---|
+| Contract     | Producer     | Consumer     | Mechanism     | Evidence |
+| ------------ | ------------ | ------------ | ------------- | -------- |
 | `[contract]` | `[producer]` | `[consumer]` | `[mechanism]` | `EV-...` |
 
 ## Component Reference
 
-| Component | Responsibility | Runtime Unit | Code Trace |
-|---|---|---|---|
-| `[component]` | `[responsibility]` | `[unit]` | `10-code-trace-map.md#...` |
+| Component     | Responsibility     | Runtime Unit | Code Trace                 |
+| ------------- | ------------------ | ------------ | -------------------------- |
+| `[component]` | `[responsibility]` | `[unit]`     | `10-code-trace-map.md#...` |
 
 ## Explicit Non-Claims
 
 These areas are not verified enough to include as reference design:
+
 - `[area] — reason`
 
 ## Change Guidance
 
-| Area | Guidance | Reason |
-|---|---|---|
+| Area     | Guidance           | Reason     |
+| -------- | ------------------ | ---------- |
 | `[area]` | safe/caution/avoid | `[reason]` |

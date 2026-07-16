@@ -66,12 +66,13 @@
 
 ## 4. Doc Inventory
 
-| Doc Path | Type | Scope | Owner | Last Signal | Status | Notes |
-|---|---|---|---|---|---|---|
-| `README.md` | overview | repo-wide | unknown | `<signal>` | suspect | `<notes>` |
-| `docs/api.md` | API | backend | unknown | `<signal>` | stale | `<notes>` |
+| Doc Path      | Type     | Scope     | Owner   | Last Signal | Status  | Notes     |
+| ------------- | -------- | --------- | ------- | ----------- | ------- | --------- |
+| `README.md`   | overview | repo-wide | unknown | `<signal>`  | suspect | `<notes>` |
+| `docs/api.md` | API      | backend   | unknown | `<signal>`  | stale   | `<notes>` |
 
 Status values:
+
 - `valid`
 - `suspect`
 - `stale`
@@ -82,19 +83,21 @@ Status values:
 
 ## 5. Code-to-Docs Coverage Map
 
-| Module / Area | Code Source | Existing Docs | Coverage | Confidence | Notes |
-|---|---|---|---|---|---|
-| Auth | `src/auth/**` | `docs/auth.md` | partial | medium | `<notes>` |
-| Orders API | `src/routes/orders*` | `docs/api.md` | low | low | `<notes>` |
-| Queue worker | `src/workers/**` | none | none | high | `<notes>` |
+| Module / Area | Code Source          | Existing Docs  | Coverage | Confidence | Notes     |
+| ------------- | -------------------- | -------------- | -------- | ---------- | --------- |
+| Auth          | `src/auth/**`        | `docs/auth.md` | partial  | medium     | `<notes>` |
+| Orders API    | `src/routes/orders*` | `docs/api.md`  | low      | low        | `<notes>` |
+| Queue worker  | `src/workers/**`     | none           | none     | high       | `<notes>` |
 
 Coverage values:
+
 - `full`
 - `partial`
 - `low`
 - `none`
 
 Confidence values:
+
 - `high`
 - `medium`
 - `low`
@@ -103,12 +106,13 @@ Confidence values:
 
 ## 6. Scoring Per Doc
 
-| Doc | Accuracy | Coverage | Freshness | Verifiability | Usability | Total | Verdict |
-|---|---:|---:|---:|---:|---:|---:|---|
-| `README.md` | 3 | 3 | 2 | 4 | 4 | 3.2 | risky |
-| `docs/api.md` | 2 | 3 | 1 | 4 | 3 | 2.6 | risky |
+| Doc           | Accuracy | Coverage | Freshness | Verifiability | Usability | Total | Verdict |
+| ------------- | -------: | -------: | --------: | ------------: | --------: | ----: | ------- |
+| `README.md`   |        3 |        3 |         2 |             4 |         4 |   3.2 | risky   |
+| `docs/api.md` |        2 |        3 |         1 |             4 |         3 |   2.6 | risky   |
 
 Verdict bands:
+
 - `4.5–5.0` — excellent
 - `3.5–4.4` — usable
 - `2.5–3.4` — risky
@@ -118,18 +122,20 @@ Verdict bands:
 
 ## 7. Mismatch / Gap Report
 
-| ID | Severity | Area | Doc | Evidence in Code | Problem | Fix |
-|---|---|---|---|---|---|---|
-| D-001 | high | setup | `README.md` | `packageManager: pnpm` | docs say `npm install` | update setup section |
-| D-002 | high | API | `docs/api.md` | route path `/api/orders` | docs say `/v1/orders` | repair endpoint docs |
-| D-003 | medium | ops | none | cron worker found | scheduler docs missing | add ops doc |
+| ID    | Severity | Area  | Doc           | Evidence in Code         | Problem                | Fix                  |
+| ----- | -------- | ----- | ------------- | ------------------------ | ---------------------- | -------------------- |
+| D-001 | high     | setup | `README.md`   | `packageManager: pnpm`   | docs say `npm install` | update setup section |
+| D-002 | high     | API   | `docs/api.md` | route path `/api/orders` | docs say `/v1/orders`  | repair endpoint docs |
+| D-003 | medium   | ops   | none          | cron worker found        | scheduler docs missing | add ops doc          |
 
 Severity:
+
 - `high` — onboarding fail, wrong integration, incident risk
 - `medium` — architecture or ops misunderstanding
 - `low` — clarity / maintainability issue
 
 Problem class:
+
 - `incorrect`
 - `outdated`
 - `incomplete`
@@ -235,9 +241,9 @@ Problem class:
 
 ### Unverifiable claims
 
-| Claim | Current doc | Why unverifiable | Needed human input |
-|---|---|---|---|
-| `<claim>` | `docs/arch.md` | not represented in repo | `<owner/team>` |
+| Claim     | Current doc    | Why unverifiable        | Needed human input |
+| --------- | -------------- | ----------------------- | ------------------ |
+| `<claim>` | `docs/arch.md` | not represented in repo | `<owner/team>`     |
 
 ---
 
@@ -282,6 +288,7 @@ docs/
 ```
 
 Notes:
+
 - `<structure rationale>`
 
 ---
@@ -313,6 +320,7 @@ Notes:
 ### PR triggers
 
 Require docs review when changed files touch:
+
 - routes / controllers
 - schema / migrations
 - env/config

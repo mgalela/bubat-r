@@ -127,10 +127,10 @@ Buat `coverage-ledger.md` sejak Stage A. Update sampai Stage D selesai.
 Kolom minimum:
 
 | Area    | Item        | Evidence Type | Weight | Status  | Confidence | Citation                        | Notes                      |
-| ------- | ----------- | ------------- | -----: | ------- | ---------- | ------------------------------- | -------------------------- |
-| Runtime | API service | executable    |      5 | Covered | Observed   | `package.json`, `src/server.ts` | main inbound HTTP          |
-| Flow    | Checkout    | write-path    |      5 | Partial | Inferred   | `routes/checkout.ts`            | payment failure not traced |
-| Data    | Order       | table/entity  |      5 | Covered | Observed   | `migrations/*orders*`           | owner candidate found      |
+| ------- | ----------- | ------------- | ------ | ------- | ---------- | ------------------------------- | -------------------------- |
+| Runtime | API service | executable    | 5      | Covered | Observed   | `package.json`, `src/server.ts` | main inbound HTTP          |
+| Flow    | Checkout    | write-path    | 5      | Partial | Inferred   | `routes/checkout.ts`            | payment failure not traced |
+| Data    | Order       | table/entity  | 5      | Covered | Observed   | `migrations/*orders*`           | owner candidate found      |
 
 Status values:
 
@@ -149,12 +149,12 @@ Status values:
 Bobot 1–5:
 
 | Weight | Meaning                        | Examples                                                            |
-| -----: | ------------------------------ | ------------------------------------------------------------------- |
-|      5 | Critical architecture spine    | main executable, top write flow, core entity, external payment/auth |
-|      4 | High business/technical impact | major worker, important integration, shared table, core API         |
-|      3 | Normal feature surface         | secondary flow, normal module, non-core entity                      |
-|      2 | Supporting concern             | admin utility, reporting read path, helper adapter                  |
-|      1 | Low architectural impact       | leaf helper, rare path, isolated script                             |
+| ------ | ------------------------------ | ------------------------------------------------------------------- |
+| 5      | Critical architecture spine    | main executable, top write flow, core entity, external payment/auth |
+| 4      | High business/technical impact | major worker, important integration, shared table, core API         |
+| 3      | Normal feature surface         | secondary flow, normal module, non-core entity                      |
+| 2      | Supporting concern             | admin utility, reporting read path, helper adapter                  |
+| 1      | Low architectural impact       | leaf helper, rare path, isolated script                             |
 
 Rule:
 
@@ -266,6 +266,34 @@ Minimum fields:
 - coverage snapshot
 - active gaps
 - next recommended step
+
+## 5.8 Multi-Directory Federation
+
+Ketika user menjalankan `bubat-r run` di beberapa direktori terpisah (e.g. root, backend, frontend), tiap run menghasilkan `00-workflow-status.md` sendiri yang terisolasi. Gunakan `bubat-r link` untuk menyambungkan node-node tersebut.
+
+Setelah `bubat-r run` selesai di suatu direktori, jalankan dari root:
+
+```text
+bubat-r link ./backend
+bubat-r link ./frontend
+```
+
+Efek:
+
+- Tambah `## Cross-Dir Links` di masing-masing `00-workflow-status.md`
+- Tambah `## Federation Index` di root node (auto-detect)
+- Bidirectional — kedua node saling referensi
+
+Query resolution lintas-direktori:
+
+1. Buka `00-workflow-status.md` node saat ini
+2. Cek `## Cross-Dir Links` → cari topic
+3. Jika perlu lebih luas → buka root's `## Federation Index` → lookup topic → navigate ke primary node
+4. Buka primary node's `## Stage Checklist` → ambil artifact path
+
+Detail lengkap: `docs/RFC-multi-dir-federation.md` dan `commands/link.md`.
+
+---
 
 ## 5.7 DOCR Candidate Tracking
 
