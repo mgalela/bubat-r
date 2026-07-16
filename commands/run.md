@@ -11,7 +11,7 @@ This doc uses `${BUBATR_HOME}` as placeholder — replace it with the actual loc
 ## Intent
 
 ```text
-bubat-r run [target-path] [--max-hours N]
+bubat-r run [target-path]
 ```
 
 ## Protocol
