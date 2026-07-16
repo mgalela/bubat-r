@@ -23,27 +23,30 @@ bubat-r run [target-path]
 5. For each stage A–H:
    a. Read `${BUBATR_HOME}/STAGES/<X>/CONTEXT.md` for stage instructions, templates, and ast-index commands.
    b. Write output artifacts to `${BUBATR_HOME}/STAGES/<X>/` using templates in that directory.
-   c. When stage is done, copy outputs to `<target>/reconstruction/` (copy commands in each CONTEXT.md).
+   c. When stage is done, mark it `Done` in `${BUBATR_HOME}/STAGES/A/00-workflow-status.md`. Do NOT copy to `<target>/reconstruction/` — outputs stay in `STAGES/` until user runs `bubat-r export` explicitly.
    d. Update `${BUBATR_HOME}/STAGES/A/00-workflow-status.md` after each completed, blocked, or skipped stage.
 6. If run stops before later stages, mark them `Not Run` or `Blocked` in `00-workflow-status.md`.
 7. If critical coverage below target, recommend `bubat-r gap` and record next step in status file.
-8. If durable local context near code is needed, recommend `bubat-r export docr` and mark DOCR status.
+8. When run completes, remind user to run `bubat-r export <target-path>` to materialize outputs into target repo's `reconstruction/` directory.
+9. If durable local context near code is needed, recommend `bubat-r export docr` and mark DOCR status.
 
 ## Stage → Output Files
 
-| Stage | Write here first (under `${BUBATR_HOME}/`) | Copy to target after done                                                      |
-| ----- | ------------------------------------------ | ------------------------------------------------------------------------------ |
-| A     | `${BUBATR_HOME}/STAGES/A/`                 | `<target>/reconstruction/00–03 + docr-candidates`                              |
-| B     | `${BUBATR_HOME}/STAGES/B/`                 | `<target>/reconstruction/04 + 02`                                              |
-| C     | `${BUBATR_HOME}/STAGES/C/`                 | `<target>/reconstruction/05 + 02`                                              |
-| D     | `${BUBATR_HOME}/STAGES/D/`                 | `<target>/reconstruction/06 + 02`                                              |
-| E     | `${BUBATR_HOME}/STAGES/E/`                 | `<target>/reconstruction/07`                                                   |
-| F     | `${BUBATR_HOME}/STAGES/F/`                 | `<target>/reconstruction/08`                                                   |
-| G     | `${BUBATR_HOME}/STAGES/G/`                 | `<target>/reconstruction/09, 10`                                               |
-| H     | `${BUBATR_HOME}/STAGES/H/`                 | `<target>/reconstruction/11, 12`                                               |
-| I     | `${BUBATR_HOME}/STAGES/I/`                 | `<target>/reconstruction/gaps/, 13, 02, 11, 12`                                |
-| J     | `${BUBATR_HOME}/STAGES/J/`                 | `<target>/AGENTS.md`, subtree `AGENTS.md`, `reconstruction/docr-export-report` |
-| K     | `${BUBATR_HOME}/STAGES/K/`                 | `<target>/reconstruction/diagrams/`                                            |
+Outputs stay in `STAGES/` until `bubat-r export` is run explicitly.
+
+| Stage | Write here (under `${BUBATR_HOME}/`) | Artifacts                                                |
+| ----- | ------------------------------------ | -------------------------------------------------------- |
+| A     | `${BUBATR_HOME}/STAGES/A/`           | `00–03` + `docr-candidates`                              |
+| B     | `${BUBATR_HOME}/STAGES/B/`           | `04` + `02` (updated)                                    |
+| C     | `${BUBATR_HOME}/STAGES/C/`           | `05` + `02` (updated)                                    |
+| D     | `${BUBATR_HOME}/STAGES/D/`           | `06` + `02` (updated)                                    |
+| E     | `${BUBATR_HOME}/STAGES/E/`           | `07`                                                     |
+| F     | `${BUBATR_HOME}/STAGES/F/`           | `08`                                                     |
+| G     | `${BUBATR_HOME}/STAGES/G/`           | `09`, `10`                                               |
+| H     | `${BUBATR_HOME}/STAGES/H/`           | `11`, `12`                                               |
+| I     | `${BUBATR_HOME}/STAGES/I/`           | `gaps/`, `13`, `02`, `11`, `12` (updated)                |
+| J     | `${BUBATR_HOME}/STAGES/J/`           | `root-AGENTS.md`, subtree `AGENTS.md`, export report     |
+| K     | `${BUBATR_HOME}/STAGES/K/`           | `diagrams/`                                              |
 
 ## Status Rule
 

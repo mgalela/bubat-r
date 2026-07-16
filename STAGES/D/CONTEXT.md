@@ -53,12 +53,7 @@ Write output to this stage directory first:
 - `STAGES/D/06-ownership-map.md`
 - `STAGES/D/02-coverage-ledger.md` (updated copy from Stage C)
 
-After stage done, copy to target repo:
-
-```bash
-cp STAGES/D/06-ownership-map.md <target>/reconstruction/
-cp STAGES/D/02-coverage-ledger.md <target>/reconstruction/
-```
+After stage done, mark as `Done` in `00-workflow-status.md`.
 
 ## AST Index Commands
 

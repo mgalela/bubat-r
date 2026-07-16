@@ -8,17 +8,24 @@ Summarize reconstruction progress.
 bubat-r status [target-path]
 ```
 
+## Path Resolution
+
+Determine `${BUBATR_HOME}` — directory containing `bubat-r`.
+
+For `02-coverage-ledger.md`: read from the latest Done stage that produced it — check `STAGES/I/` first, then `STAGES/D/`, `STAGES/C/`, `STAGES/B/`, `STAGES/A/`.
+For `12-drift-ambiguity-report.md`: check `STAGES/I/` first, then `STAGES/H/`.
+
 ## Reads
 
-- `reconstruction/00-workflow-status.md` first
-- `reconstruction/02-coverage-ledger.md`
-- `reconstruction/12-drift-ambiguity-report.md`
-- `reconstruction/gaps/*.md`
-- `reconstruction/13-readiness-verdict.md` if present
-- `reconstruction/research/*.md` if research overlay used
-- `reconstruction/docs-feed/*.md` if late-doc overlay used
-- `reconstruction/docr-export-report.md` if Stage J / DOCR export ran
-- root `AGENTS.md` and selected child `AGENTS.md` if Stage J / DOCR export already ran
+- `${BUBATR_HOME}/STAGES/A/00-workflow-status.md` first
+- latest `02-coverage-ledger.md` per resolution rule above
+- latest `12-drift-ambiguity-report.md` per resolution rule above
+- `${BUBATR_HOME}/STAGES/I/gaps/*.md` if Stage I ran
+- `${BUBATR_HOME}/STAGES/I/13-readiness-verdict.md` if present
+- `${BUBATR_HOME}/STAGES/overlays/research/*.md` if research overlay used
+- `${BUBATR_HOME}/STAGES/overlays/docs-feed/*.md` if late-doc overlay used
+- `${BUBATR_HOME}/STAGES/J/docr-export-report.md` if Stage J ran
+- root `AGENTS.md` and selected child `AGENTS.md` in target repo if Stage J ran
 
 ## Reports
 

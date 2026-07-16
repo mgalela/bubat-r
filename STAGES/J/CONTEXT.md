@@ -57,15 +57,7 @@ Write output to this stage directory first:
 - `STAGES/J/child-AGENTS.md` (one per selected subtree boundary; rename per path)
 - `STAGES/J/docr-export-report.md`
 
-After stage done, copy to target repo:
-
-```bash
-cp STAGES/J/docr-export-report.md <target>/reconstruction/
-# Root context doc
-cp STAGES/J/root-AGENTS.md <target>/AGENTS.md
-# Child docs — copy to their respective subtree paths
-cp STAGES/J/<subtree>-AGENTS.md <target>/<subtree>/AGENTS.md
-```
+After stage done, mark as `Done` in `00-workflow-status.md`. Export handles: `docr-export-report.md`, `root-AGENTS.md → <target>/AGENTS.md`, and each `<subtree>-AGENTS.md → <target>/<subtree>/AGENTS.md`.
 
 ## AST Index Commands
 

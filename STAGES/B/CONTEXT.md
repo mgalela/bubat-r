@@ -53,12 +53,7 @@ Write output to this stage directory first:
 - `STAGES/B/04-runtime-map.md`
 - `STAGES/B/02-coverage-ledger.md` (updated copy from Stage A)
 
-After stage done, copy to target repo:
-
-```bash
-cp STAGES/B/04-runtime-map.md <target>/reconstruction/
-cp STAGES/B/02-coverage-ledger.md <target>/reconstruction/
-```
+After stage done, mark as `Done` in `00-workflow-status.md`.
 
 ## AST Index Commands
 
