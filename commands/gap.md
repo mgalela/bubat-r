@@ -16,12 +16,14 @@ bubat-r gap checkout-ledger max 3
 3. Read `reconstruction/12-drift-ambiguity-report.md`.
 4. Mark Stage I in `00-workflow-status.md` as `In Progress`.
 5. Create `reconstruction/gaps/GAP-xxx-<area>.md` from template.
+   Header must include: `Status: \`In Progress\``.
 6. Run loop until stop condition or max loops.
 7. Update affected artifacts.
 8. Update `00-workflow-status.md` with active gap, loop result, coverage/readiness impact, and next recommended step.
 9. If Stage J / DOCR docs exist for touched area, refresh nearest relevant `AGENTS.md` and affected parent indexes.
-10. Write coverage/readiness verdict.
-11. Mark Stage I as `Done` or `Blocked` explicitly in status file.
+10. Write coverage/readiness verdict at bottom of gap file.
+11. **Update gap file header `Status` to reflect actual state**: `\`Closed\`` when fully resolved, `\`Blocked\`` when cannot proceed, or keep `\`In Progress\`` for partial progress.
+12. Mark Stage I as `Done` or `Blocked` explicitly in status file.
 
 ## Status Rule
 

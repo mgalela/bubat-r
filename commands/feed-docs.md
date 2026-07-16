@@ -1,4 +1,4 @@
-# bubat-r feed docs
+# bubat-r feed-docs
 
 Feed late/stale docs into reconstruction without letting docs override evidence.
 
