@@ -109,15 +109,7 @@ Write output to this stage directory first:
 - `STAGES/I/11-reference-design.md` (updated)
 - `STAGES/I/12-drift-ambiguity-report.md` (updated)
 
-After stage done, copy to target repo:
-
-```bash
-cp STAGES/I/gaps/*.md <target>/reconstruction/gaps/
-cp STAGES/I/13-readiness-verdict.md <target>/reconstruction/
-cp STAGES/I/02-coverage-ledger.md <target>/reconstruction/
-cp STAGES/I/11-reference-design.md <target>/reconstruction/
-cp STAGES/I/12-drift-ambiguity-report.md <target>/reconstruction/
-```
+After stage done, mark as `Done` in `00-workflow-status.md`.
 
 ## AST Index Commands
 

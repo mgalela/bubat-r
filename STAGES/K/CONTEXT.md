@@ -29,26 +29,22 @@ Input preferred:
 
 Generated from BUBAT-R Stage K.
 
-| File                                | Type             | Purpose                                                                | Primary Input                       |
-| ----------------------------------- | ---------------- | ---------------------------------------------------------------------- | ----------------------------------- |
-| `diagrams/c4-container.puml`        | C4 Container     | Container diagram: semua services, ports, tables, deprecated, external | 04-runtime-map                      |
-| `diagrams/c4-component-{svc}.puml`  | C4 Component     | Per service: handler components + security ⚠️ + line refs              | 09-component-map, 10-code-trace-map |
-| `diagrams/read-path-dataflow.puml`  | Dataflow         | Semua read flows konsolidasi (flow header per flow)                    | 05-behavior-spine                   |
-| `diagrams/write-path-dataflow.puml` | Dataflow         | Semua write flows konsolidasi                                          | 05-behavior-spine                   |
-| `diagrams/read-path-{topic}.puml`   | Dataflow (topic) | Per topik, satu flow per file (navigable)                              | 05-behavior-spine                   |
-| `diagrams/write-path-{topic}.puml`  | Dataflow (topic) | Per topik                                                              | 05-behavior-spine                   |
-| `diagrams/read-path-sequence.puml`  | Sequence         | Semua read flows konsolidasi — urutan temporal antar service + DB      | 05-behavior-spine                   |
-| `diagrams/write-path-sequence.puml` | Sequence         | Semua write flows konsolidasi — urutan temporal antar service + DB     | 05-behavior-spine                   |
-| `diagrams/read-path-sequence-{topic}.puml` | Sequence (topic) | Per topik read sequence, satu flow per file                      | 05-behavior-spine                   |
-| `diagrams/write-path-sequence-{topic}.puml` | Sequence (topic) | Per topik write sequence, satu flow per file                     | 05-behavior-spine                   |
-| `diagrams/README.md`                | Index            | Index diagram: file, purpose, input artifact                           | —                                   |
-| `diagrams/png/*.png`                | Image            | PNG generated dari setiap `.puml` — layout top-to-bottom, readable tanpa zoom horizontal | —  |
+| File                                        | Type             | Purpose                                                                                  | Primary Input                       |
+| ------------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------- | ----------------------------------- |
+| `diagrams/c4-container.puml`                | C4 Container     | Container diagram: semua services, ports, tables, deprecated, external                   | 04-runtime-map                      |
+| `diagrams/c4-component-{svc}.puml`          | C4 Component     | Per service: handler components + security ⚠️ + line refs                                | 09-component-map, 10-code-trace-map |
+| `diagrams/read-path-dataflow.puml`          | Dataflow         | Semua read flows konsolidasi (flow header per flow)                                      | 05-behavior-spine                   |
+| `diagrams/write-path-dataflow.puml`         | Dataflow         | Semua write flows konsolidasi                                                            | 05-behavior-spine                   |
+| `diagrams/read-path-{topic}.puml`           | Dataflow (topic) | Per topik, satu flow per file (navigable)                                                | 05-behavior-spine                   |
+| `diagrams/write-path-{topic}.puml`          | Dataflow (topic) | Per topik                                                                                | 05-behavior-spine                   |
+| `diagrams/read-path-sequence.puml`          | Sequence         | Semua read flows konsolidasi — urutan temporal antar service + DB                        | 05-behavior-spine                   |
+| `diagrams/write-path-sequence.puml`         | Sequence         | Semua write flows konsolidasi — urutan temporal antar service + DB                       | 05-behavior-spine                   |
+| `diagrams/read-path-sequence-{topic}.puml`  | Sequence (topic) | Per topik read sequence, satu flow per file                                              | 05-behavior-spine                   |
+| `diagrams/write-path-sequence-{topic}.puml` | Sequence (topic) | Per topik write sequence, satu flow per file                                             | 05-behavior-spine                   |
+| `diagrams/README.md`                        | Index            | Index diagram: file, purpose, input artifact                                             | —                                   |
+| `diagrams/png/*.png`                        | Image            | PNG generated dari setiap `.puml` — layout top-to-bottom, readable tanpa zoom horizontal | —                                   |
 
-Write output to this stage directory first, then after stage done, copy to target repo:
-
-```bash
-cp -r STAGES/K/diagrams/ <target>/reconstruction/diagrams/
-```
+Write output to this stage directory first. After stage done, mark as `Done` in `00-workflow-status.md`.
 
 Topic naming: `storage`, `catalog`, `query`, `managed`, `pipeline`, `ext-connection`, `lifecycle`
 
@@ -107,12 +103,12 @@ top to bottom direction
 
 Aturan arrow direction:
 
-| Konteks | Arrow | Alasan |
-|---------|-------|--------|
-| Flow utama (request → service → DB → response) | `-down->` | stack vertikal |
-| Branch YES path (path utama) | `-down->` | terus ke bawah |
-| Branch NO / parallel path | `-right->` atau `-left->` | horizontal hanya untuk cabang |
-| Antar flow section di consolidated file | `-down->` atau separator `rectangle` | jangan pakai `-right->` antar flow |
+| Konteks                                        | Arrow                                | Alasan                             |
+| ---------------------------------------------- | ------------------------------------ | ---------------------------------- |
+| Flow utama (request → service → DB → response) | `-down->`                            | stack vertikal                     |
+| Branch YES path (path utama)                   | `-down->`                            | terus ke bawah                     |
+| Branch NO / parallel path                      | `-right->` atau `-left->`            | horizontal hanya untuk cabang      |
+| Antar flow section di consolidated file        | `-down->` atau separator `rectangle` | jangan pakai `-right->` antar flow |
 
 Consolidated dataflow (`*-dataflow.puml`): setiap flow section disusun **ke bawah**, bukan ke samping. Gunakan `rectangle` header per flow sebagai anchor, sambung dengan `fN_title -[hidden]down-> fM_title` bila perlu paksa urutan vertikal antar flow.
 
@@ -156,7 +152,7 @@ Bukan hanya sequential arrows. Minimal: setiap `if/else` yang memilih backend be
 
 ### 9. Sequence Diagram — Wajib
 
-Setiap write-path dan read-path WAJIB punya sequence diagram (PlantUML `@startuml sequence`) sebagai pelengkap dataflow. Dataflow tunjukin *apa* jalurnya, sequence tunjukin *urutan temporal* — siapa ngomong ke siapa, dalam urutan apa, seberapa lama.
+Setiap write-path dan read-path WAJIB punya sequence diagram (PlantUML `@startuml sequence`) sebagai pelengkap dataflow. Dataflow tunjukin _apa_ jalurnya, sequence tunjukin _urutan temporal_ — siapa ngomong ke siapa, dalam urutan apa, seberapa lama.
 
 Gunakan `->` (async) dan `->>` (sync). Jangan pakai `-down->` karena sequence diagram punya aturan arrow sendiri.
 
@@ -384,14 +380,14 @@ All `⚠️` markers trace to `12-drift-ambiguity-report.md`.
 
 Bila menjalankan Stage K ulang setelah satu artifact berubah:
 
-| Changed artifact               | Regenerate                                              |
-| ------------------------------ | ------------------------------------------------------- |
-| `04-runtime-map.md`            | `c4-container.puml`                                     |
-| `09-component-map.md`          | `c4-component-{svc}.puml` untuk service yang berubah    |
-| `10-code-trace-map.md`         | semua `c4-component-*.puml` (line refs berubah)         |
-| `05-behavior-spine.md`         | `*-path-dataflow.puml` + `*-path-sequence.puml` + per-topic yang terpengaruh     |
-| `12-drift-ambiguity-report.md` | semua files (⚠️ annotations bisa berubah)               |
-| `08-contract-map.md`           | `c4-container.puml` + per-topic path files yang relevan |
+| Changed artifact               | Regenerate                                                                   |
+| ------------------------------ | ---------------------------------------------------------------------------- |
+| `04-runtime-map.md`            | `c4-container.puml`                                                          |
+| `09-component-map.md`          | `c4-component-{svc}.puml` untuk service yang berubah                         |
+| `10-code-trace-map.md`         | semua `c4-component-*.puml` (line refs berubah)                              |
+| `05-behavior-spine.md`         | `*-path-dataflow.puml` + `*-path-sequence.puml` + per-topic yang terpengaruh |
+| `12-drift-ambiguity-report.md` | semua files (⚠️ annotations bisa berubah)                                    |
+| `08-contract-map.md`           | `c4-container.puml` + per-topic path files yang relevan                      |
 
 ## Auto-generate PNG (otomatis, tanpa perintah tambahan)
 
@@ -402,9 +398,10 @@ Setelah semua `.puml` ditulis, agent WAJIB:
    - `~/.vscode/extensions/jebbs.plantuml-*/plantuml.jar`
    - `which plantuml` atau `brew --prefix plantuml`
    - `find / -name "plantuml.jar" 2>/dev/null`
-   Bila tidak ditemukan, install via `brew install plantuml` atau download.
+     Bila tidak ditemukan, install via `brew install plantuml` atau download.
 
 2. **Generate PNG** — jalankan:
+
    ```bash
    cd STAGES/K/diagrams/
    java -Djava.awt.headless=true -jar /path/to/plantuml.jar -tpng "*.puml" -o png/
@@ -413,18 +410,16 @@ Setelah semua `.puml` ditulis, agent WAJIB:
 3. **Verifikasi** — setiap file PNG:
    - exit code = 0 (tidak ada error syntax)
    - file size > 1000 bytes (bukan error overlay)
-   Bila ada yang gagal, perbaiki syntax `.puml` dan ulang.
+     Bila ada yang gagal, perbaiki syntax `.puml` dan ulang.
 
-4. **Copy ke reconstruction** — setelah sukses:
-   ```bash
-   cp -r STAGES/K/diagrams/png/ <project>/reconstruction/diagrams/png/
-   ```
+4. **Export ke reconstruction** — setelah sukses, jalankan `bubat-r export <target-path> stages K`. Jangan copy manual.
 
 ### Aturan syntax agar PNG tidak error
 
-| Larangan | Contoh salah | Perbaikan |
-|----------|-------------|-----------|
-| Inline rectangle di arrow target | `src -> rectangle "X" as a #C : "label"` | Deklarasi rectangle dulu:
+| Larangan                         | Contoh salah                             | Perbaikan                 |
+| -------------------------------- | ---------------------------------------- | ------------------------- |
+| Inline rectangle di arrow target | `src -> rectangle "X" as a #C : "label"` | Deklarasi rectangle dulu: |
+
 `rectangle "X" as a #C`
 `src -> a : "label"` |
 | Karakter `?` di luar string (seperti `WHERE id=?`) | `WHERE id=?` | Ganti ke `WHERE id = :id` atau `BY id` |

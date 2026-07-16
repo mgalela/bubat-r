@@ -63,12 +63,7 @@ Write output to this stage directory first:
 - `STAGES/C/05-behavior-spine.md`
 - `STAGES/C/02-coverage-ledger.md` (updated copy from Stage B)
 
-After stage done, copy to target repo:
-
-```bash
-cp STAGES/C/05-behavior-spine.md <target>/reconstruction/
-cp STAGES/C/02-coverage-ledger.md <target>/reconstruction/
-```
+After stage done, mark as `Done` in `00-workflow-status.md`.
 
 ## AST Index Commands
 

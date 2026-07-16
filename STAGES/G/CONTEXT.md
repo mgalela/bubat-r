@@ -50,12 +50,7 @@ Write output to this stage directory first:
 - `STAGES/G/09-component-map.md`
 - `STAGES/G/10-code-trace-map.md`
 
-After stage done, copy to target repo:
-
-```bash
-cp STAGES/G/09-component-map.md <target>/reconstruction/
-cp STAGES/G/10-code-trace-map.md <target>/reconstruction/
-```
+After stage done, mark as `Done` in `00-workflow-status.md`.
 
 ## AST Index Commands
 

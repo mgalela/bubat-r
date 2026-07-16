@@ -20,15 +20,16 @@ bubat-r research "which runtimes consume tenant events" for tenant-isolation max
 
 ## Protocol
 
-1. Read existing canonical artifacts if present:
-   - `reconstruction/02-coverage-ledger.md`
-   - `reconstruction/12-drift-ambiguity-report.md`
-   - related `reconstruction/gaps/GAP-*.md`
-2. Frame research question and success condition.
-3. Decompose into focused research lanes.
-4. Run parallel discovery sweep using structural search first.
-5. Consolidate candidate evidence and counter-evidence.
-6. Save research memo under `reconstruction/research/`.
+1. Determine `${BUBATR_HOME}` — directory containing `bubat-r`.
+2. Read existing canonical artifacts if present:
+   - latest `02-coverage-ledger.md` (check `STAGES/I/` → `STAGES/D/` → `STAGES/C/` → `STAGES/B/` → `STAGES/A/`)
+   - latest `12-drift-ambiguity-report.md` (check `STAGES/I/` → `STAGES/H/`)
+   - related `STAGES/I/gaps/GAP-*.md`
+3. Frame research question and success condition.
+4. Decompose into focused research lanes.
+5. Run parallel discovery sweep using structural search first.
+6. Consolidate candidate evidence and counter-evidence.
+7. Save research memo under `${BUBATR_HOME}/STAGES/overlays/research/`.
 7. Recommend exact artifact updates or next `bubat-r gap` loop.
 
 ## Rule

@@ -7,9 +7,11 @@ Index state: `ast-index stats` = `[summary]`
 ## Scope
 
 Included paths:
+
 - `[path]`
 
 Excluded paths:
+
 - `[path]`
 
 ## AST Index Baseline
@@ -24,28 +26,29 @@ ast-index conventions
 ```
 
 Notes:
+
 - `[note]`
 
 ## Evidence Table
 
-| ID | Type | Location | Observed Fact | Confidence | Weight | Coverage Status | Notes |
-|---|---|---|---|---|---:|---|---|
-| EV-001 | route/executable/schema/integration/test/config | `path:line` | `[fact]` | Observed/Inferred/Unknown | 1-5 | Covered/Partial/Uncovered/Unknown/N/A | `[notes]` |
+| ID     | Type                                            | Location    | Observed Fact | Confidence                | Weight | Coverage Status                       | Notes     |
+| ------ | ----------------------------------------------- | ----------- | ------------- | ------------------------- | ------ | ------------------------------------- | --------- |
+| EV-001 | route/executable/schema/integration/test/config | `path:line` | `[fact]`      | Observed/Inferred/Unknown | 1-5    | Covered/Partial/Uncovered/Unknown/N/A | `[notes]` |
 
 ## Evidence Type Checklist
 
-| Type | Status | Notes |
-|---|---|---|
-| Repo topology | Unknown | |
-| Executable entrypoints | Unknown | |
-| Routes/RPC/CLI | Unknown | |
-| Cron/workers/queues | Unknown | |
-| Schema/migrations/models | Unknown | |
-| Outbound integrations | Unknown | |
-| Env/secrets/config | Unknown | |
-| Deploy/infra/CI | Unknown | |
-| Tests | Unknown | |
-| Observability config | Unknown | |
+| Type                     | Status  | Notes |
+| ------------------------ | ------- | ----- |
+| Repo topology            | Unknown |       |
+| Executable entrypoints   | Unknown |       |
+| Routes/RPC/CLI           | Unknown |       |
+| Cron/workers/queues      | Unknown |       |
+| Schema/migrations/models | Unknown |       |
+| Outbound integrations    | Unknown |       |
+| Env/secrets/config       | Unknown |       |
+| Deploy/infra/CI          | Unknown |       |
+| Tests                    | Unknown |       |
+| Observability config     | Unknown |       |
 
 ## Coverage Summary
 
@@ -57,6 +60,6 @@ Notes:
 
 ## Open Questions
 
-| Question | Related Evidence | Priority | Next Step |
-|---|---|---|---|
-| `[question]` | `EV-...` | High/Medium/Low | `[next]` |
+| Question     | Related Evidence | Priority        | Next Step |
+| ------------ | ---------------- | --------------- | --------- |
+| `[question]` | `EV-...`         | High/Medium/Low | `[next]`  |

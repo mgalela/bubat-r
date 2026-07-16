@@ -34,12 +34,7 @@ Write output to this stage directory first:
 - `STAGES/H/11-reference-design.md`
 - `STAGES/H/12-drift-ambiguity-report.md`
 
-After stage done, copy to target repo:
-
-```bash
-cp STAGES/H/11-reference-design.md <target>/reconstruction/
-cp STAGES/H/12-drift-ambiguity-report.md <target>/reconstruction/
-```
+After stage done, mark as `Done` in `00-workflow-status.md`.
 
 ## AST Index Commands
 

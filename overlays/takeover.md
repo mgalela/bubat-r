@@ -7,17 +7,20 @@ Companion doc: `bubat-r/workflow.md`
 ## 1. Purpose
 
 Dokumen utama menjawab:
+
 - bagaimana merekonstruksi arsitektur dari hard evidence
 - bagaimana mengukur coverage
 - bagaimana membentuk reference design
 
 Overlay ini menjawab:
+
 - bagaimana takeover sistem secara aman
 - bagaimana tahu sistem bisa dijalankan, dites, dan diubah
 - bagaimana memprioritaskan risiko operasional dan delivery
 - bagaimana memakai hasil rekonstruksi untuk mulai bekerja tanpa merusak sistem
 
 Gunakan overlay ini bila konteksnya bukan hanya dokumentasi arsitektur, tapi juga:
+
 - tim baru masuk belakangan
 - owner lama tidak tersedia / knowledge hilang
 - production masih berjalan
@@ -50,13 +53,14 @@ T0 Takeover Viability Check
 
 Mapping:
 
-| Overlay Step | Kapan | Input | Output | Dipakai oleh |
-|---|---|---|---|---|
-| T0 Takeover Viability Check | sebelum Main A | repo, env hints, scripts | `takeover-viability.md` | Main A–D confidence |
-| T1 Risk Register | setelah Main D, update terus | coverage gaps, runtime, flows, ownership | `risk-register.md` | Main E–H priority |
-| T2 Safe Change Readiness | setelah Main H/J | reference design, risk register, coverage ledger, local context docs if present | `safe-change-readiness.md` | planning, implementation |
+| Overlay Step                | Kapan                        | Input                                                                           | Output                     | Dipakai oleh             |
+| --------------------------- | ---------------------------- | ------------------------------------------------------------------------------- | -------------------------- | ------------------------ |
+| T0 Takeover Viability Check | sebelum Main A               | repo, env hints, scripts                                                        | `takeover-viability.md`    | Main A–D confidence      |
+| T1 Risk Register            | setelah Main D, update terus | coverage gaps, runtime, flows, ownership                                        | `risk-register.md`         | Main E–H priority        |
+| T2 Safe Change Readiness    | setelah Main H/J             | reference design, risk register, coverage ledger, local context docs if present | `safe-change-readiness.md` | planning, implementation |
 
 Aturan:
+
 - Main workflow tetap menghasilkan reference design
 - Main J/DOCR dapat materialize local context docs near code for handoff speed
 - Overlay menghasilkan takeover readiness
@@ -69,19 +73,23 @@ Aturan:
 ## 3. T0 — Takeover Viability Check
 
 Tujuan:
+
 - tahu sistem bisa dibuild, dijalankan, dites, dan dideploy atau tidak
 - tahu gap operasional sebelum terlalu jauh menganalisis arsitektur
 
 Waktu ideal:
+
 - 0.5–1 hari pertama
 
 Output:
+
 - `takeover-viability.md`
 - `00-workflow-status.md` updated with `T0` status
 
 Checklist minimum:
 
 ### Repository
+
 - repo bisa clone bersih
 - branch utama jelas
 - dependency manager jelas
@@ -89,12 +97,14 @@ Checklist minimum:
 - monorepo/submodule/worktree jelas
 
 ### Build
+
 - dependency install berhasil
 - build berhasil/gagal
 - artifact build jelas
 - generated code step jelas
 
 ### Run local
+
 - local run command ditemukan
 - required env vars ditemukan
 - missing secrets/config dicatat
@@ -102,12 +112,14 @@ Checklist minimum:
 - local DB/cache/queue requirement diketahui
 
 ### Test
+
 - test command ditemukan
 - unit/integration/e2e dipisah
 - test bisa jalan/gagal
 - failure karena env atau real bug dibedakan
 
 ### Deploy / Release
+
 - deploy scripts/pipeline ditemukan
 - target environment diketahui
 - rollback path ada/tidak
@@ -115,6 +127,7 @@ Checklist minimum:
 - feature flag mechanism ada/tidak
 
 ### Ops
+
 - logs/tracing/metrics ditemukan
 - healthcheck ditemukan
 - alert/dashboard ditemukan
@@ -126,6 +139,7 @@ Template:
 # Takeover Viability
 
 ## Summary
+
 - Build: Pass/Fail/Unknown
 - Local run: Pass/Fail/Unknown
 - Tests: Pass/Fail/Unknown
@@ -134,22 +148,27 @@ Template:
 - Observability: Known/Partial/Unknown
 
 ## Commands Tried
+
 | Command | Result | Notes |
-|---|---|---|
+| ------- | ------ | ----- |
 
 ## Required Environment
+
 | Var/Secret | Source | Required For | Status |
-|---|---|---|---|
+| ---------- | ------ | ------------ | ------ |
 
 ## Blocking Gaps
+
 | Gap | Impact | Next Action |
-|---|---|---|
+| --- | ------ | ----------- |
 
 ## Confidence Impact
+
 How this affects evidence confidence in Main A–D.
 ```
 
 How it feeds main workflow:
+
 - missing run/build lowers confidence for runtime behavior
 - missing tests lowers behavior confidence
 - missing deploy config lowers runtime/container confidence
@@ -161,18 +180,22 @@ How it feeds main workflow:
 ## 4. T1 — Risk Register
 
 Tujuan:
+
 - ubah evidence gaps dan contradictions menjadi risk yang bisa diprioritaskan
 - bedakan architectural uncertainty dari operational danger
 
 Waktu:
+
 - mulai setelah Main D
 - update setiap ada temuan baru
 
 Output:
+
 - `risk-register.md`
 - `00-workflow-status.md` updated with `T1` status
 
 Risk categories:
+
 - data integrity
 - security/auth
 - deploy/rollback
@@ -187,13 +210,13 @@ Risk categories:
 
 Scoring:
 
-| Score | Impact | Likelihood |
-|---:|---|---|
-| 5 | outage/data loss/security breach/revenue loss | likely/already observed |
-| 4 | major user/business impact | plausible from evidence |
-| 3 | moderate impact | possible |
-| 2 | local/minor impact | unlikely |
-| 1 | nuisance | rare |
+| Score | Impact                                        | Likelihood              |
+| ----- | --------------------------------------------- | ----------------------- |
+| 5     | outage/data loss/security breach/revenue loss | likely/already observed |
+| 4     | major user/business impact                    | plausible from evidence |
+| 3     | moderate impact                               | possible                |
+| 2     | local/minor impact                            | unlikely                |
+| 1     | nuisance                                      | rare                    |
 
 Priority formula:
 
@@ -202,6 +225,7 @@ risk_score = impact * likelihood
 ```
 
 Risk levels:
+
 - `Critical`: 20–25
 - `High`: 12–19
 - `Medium`: 6–11
@@ -212,18 +236,20 @@ Template:
 ```markdown
 # Risk Register
 
-| ID | Risk | Category | Evidence | Impact | Likelihood | Score | Level | Mitigation | Owner/Next Step |
-|---|---|---|---|---:|---:|---:|---|---|---|
-| R-001 | Multiple writers update order status | data integrity | `ownership-map.md#Order` | 5 | 4 | 20 | Critical | add tests, isolate writer, audit writes | investigate before order changes |
+| ID    | Risk                                 | Category       | Evidence                 | Impact | Likelihood | Score | Level    | Mitigation                              | Owner/Next Step                  |
+| ----- | ------------------------------------ | -------------- | ------------------------ | ------ | ---------- | ----- | -------- | --------------------------------------- | -------------------------------- |
+| R-001 | Multiple writers update order status | data integrity | `ownership-map.md#Order` | 5      | 4          | 20    | Critical | add tests, isolate writer, audit writes | investigate before order changes |
 ```
 
 Rules:
+
 - every `Contradicted` weight 5–4 item becomes a risk
 - every `Unknown` weight 5 item becomes at least Medium risk until resolved
 - every missing rollback/deploy path becomes operational risk
 - risk score may prioritize deeper reconstruction for specific areas
 
 How it feeds main workflow:
+
 - Main E domain reconstruction focuses high-risk ownership boundaries first
 - Main F contract map focuses high-risk integration edges first
 - Main G component map traces risky components first
@@ -234,24 +260,27 @@ How it feeds main workflow:
 ## 5. T2 — Safe Change Readiness
 
 Tujuan:
+
 - jawab apakah tim boleh mulai mengubah sistem
 - tentukan area aman, area perlu guardrail, area dilarang disentuh dulu
 
 Waktu:
+
 - setelah Main H reference design v0.1
 - sebelum implementation/change planning besar
 
 Output:
+
 - `safe-change-readiness.md`
 - `00-workflow-status.md` updated with `T2` status
 
 Readiness levels:
 
-| Level | Meaning | Allowed Work |
-|---|---|---|
-| Green | evidence cukup, tests/rollback cukup | normal feature/refactor with review |
-| Yellow | evidence cukup sebagian, risk known | small changes + extra tests + rollback plan |
-| Red | evidence lemah atau risk tinggi | no change before investigation/guardrail |
+| Level  | Meaning                              | Allowed Work                                |
+| ------ | ------------------------------------ | ------------------------------------------- |
+| Green  | evidence cukup, tests/rollback cukup | normal feature/refactor with review         |
+| Yellow | evidence cukup sebagian, risk known  | small changes + extra tests + rollback plan |
+| Red    | evidence lemah atau risk tinggi      | no change before investigation/guardrail    |
 
 Template:
 
@@ -259,6 +288,7 @@ Template:
 # Safe Change Readiness
 
 ## Summary
+
 - Overall readiness: Green/Yellow/Red
 - Critical risks open: N
 - Weight-5 coverage: NN%
@@ -266,13 +296,15 @@ Template:
 - Rollback confidence: High/Medium/Low
 
 ## Area Readiness
-| Area | Coverage | Risk Level | Readiness | Required Guardrail |
-|---|---:|---|---|---|
-| Checkout | 82% | High | Yellow | add e2e, verify idempotency, deploy with flag |
-| Reporting | 60% | Low | Yellow | read-only change OK |
-| Payment settlement | 45% | Critical | Red | no change until ownership + retry behavior verified |
+
+| Area               | Coverage | Risk Level | Readiness | Required Guardrail                                  |
+| ------------------ | -------- | ---------- | --------- | --------------------------------------------------- |
+| Checkout           | 82%      | High       | Yellow    | add e2e, verify idempotency, deploy with flag       |
+| Reporting          | 60%      | Low        | Yellow    | read-only change OK                                 |
+| Payment settlement | 45%      | Critical   | Red       | no change until ownership + retry behavior verified |
 
 ## Required Before First Significant Change
+
 - [ ] test coverage for top write flow
 - [ ] rollback plan verified
 - [ ] migration safety reviewed
@@ -281,12 +313,14 @@ Template:
 ```
 
 Rules:
+
 - `Red` area cannot receive architecture-significant change
 - `Yellow` area requires explicit guardrails
 - `Green` still requires normal engineering discipline
 - High/Critical risk must have mitigation or explicit acceptance
 
 How it feeds delivery:
+
 - feature planning uses readiness level
 - refactor planning starts with Green/Yellow low-risk areas
 - Red areas become investigation or stabilization tasks first
@@ -304,12 +338,14 @@ critical_coverage = sum(weight for Covered weight-5 + 0.5 * weight for Partial w
 ```
 
 Target for takeover:
+
 - critical coverage >= 90% before major change
 - runtime coverage >= 80% before deploy ownership
 - behavior coverage >= 70% before feature change
 - data ownership coverage >= 70% before data model/migration change
 
 If target not met:
+
 - allowed: read-only work, docs/reference updates, tests, observability, investigation
 - not allowed without explicit risk acceptance: schema change, payment/auth/order changes, destructive migration, large refactor
 
@@ -320,6 +356,7 @@ If target not met:
 If available, production evidence outranks static code for current behavior.
 
 Collect:
+
 - logs
 - traces
 - metrics
@@ -332,11 +369,13 @@ Collect:
 - queue/topic runtime config
 
 Use carefully:
+
 - do not expose secrets or PII
 - sample enough to confirm flow, not dump data
 - cite dashboard/query/log source without sensitive payload
 
 How to merge with main workflow:
+
 - production traces validate Stage C Behavior Spine
 - actual DB schema validates Stage D Ownership Map
 - deploy history validates Stage B Runtime Map
@@ -347,6 +386,7 @@ How to merge with main workflow:
 ## 8. Suggested Takeover Timeline
 
 ### Day 0–1
+
 - T0 Takeover Viability
 - ast-index rebuild/update
 - Main A Evidence Harvest
@@ -354,18 +394,21 @@ How to merge with main workflow:
 - first Main Spine
 
 ### Day 2–3
+
 - Main B Runtime Map
 - Main C Behavior Spine for top 3–5 write flows
 - Main D Ownership Map for top entities
 - T1 Risk Register v0.1
 
 ### Day 4–5
+
 - Main E Domain Reconstruction
 - Main F Contract Surface Map
 - Main G Component Decomposition for critical areas
 - update risks + coverage
 
 ### End of Week 1
+
 - Main H Reference Design v0.1
 - T2 Safe Change Readiness
 - decide first safe work package

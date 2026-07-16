@@ -1,4 +1,4 @@
-# bubat-r feed docs
+# bubat-r feed-docs
 
 Feed late/stale docs into reconstruction without letting docs override evidence.
 
@@ -16,15 +16,16 @@ bubat-r feed docs docs/LEDGER_DESIGN.md for checkout-ledger max 3
 
 ## Protocol
 
-1. Register doc under `reconstruction/docs-feed/`.
-2. Classify doc/sections.
-3. Extract atomic claims.
-4. If multiple docs hit same area, cluster duplicate/near-duplicate claims with `docs-feed/CLAIMS-AGGREGATE.md`.
-5. Map claims or claim clusters to gaps/coverage items.
-6. Verify claims against code/runtime/schema/config.
-7. Update artifacts only for verified impact.
-8. Record contradicted/stale docs in drift report.
-9. Surface `Target Design Only` claims clearly in `docs-feed/docs-feed-summary.md`.
+1. Determine `${BUBATR_HOME}` — directory containing `bubat-r`.
+2. Register doc under `${BUBATR_HOME}/STAGES/overlays/docs-feed/`.
+3. Classify doc/sections.
+4. Extract atomic claims.
+5. If multiple docs hit same area, cluster duplicate/near-duplicate claims with `overlays/docs-feed/CLAIMS-AGGREGATE.md`.
+6. Map claims or claim clusters to gaps/coverage items.
+7. Verify claims against code/runtime/schema/config.
+8. Update artifacts only for verified impact — write updated artifacts back to their STAGES/ home.
+9. Record contradicted/stale docs in drift report (`STAGES/I/12-drift-ambiguity-report.md` or `STAGES/H/` if Stage I not yet run).
+10. Surface `Target Design Only` claims clearly in `overlays/docs-feed/docs-feed-summary.md`.
 
 Rule:
 

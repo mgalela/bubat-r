@@ -32,6 +32,15 @@ runtime behavior > write-path > schema/migrations > tests > deploy config > read
 
 ## Command Entry
 
-```text
-bubat-r run [target-path]
-```
+Every `bubat-r <command>` MUST read the corresponding `.bubat-r/commands/<command>.md` first before executing.
+
+Available commands:
+
+- `bubat-r run [path]` — first-pass hard-evidence reconstruction
+- `bubat-r gap <area> max <n>` — critical gap deepening loop
+- `bubat-r feed docs <path> for <area> max <n>` — late/stale docs feeding
+- `bubat-r status` — show reconstruction status
+- `bubat-r verdict` — readiness verdict
+- `bubat-r research <question> [for <area>] [max-depth <n>]` — parallel research
+- `bubat-r feed bubat` — feed reconstruction into BUBAT
+- `bubat-r export docr [for <area>] [max-depth <n>]` — export hierarchical context docs

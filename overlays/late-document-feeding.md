@@ -7,11 +7,13 @@ Companion doc: `bubat-r/workflow.md`
 ## 1. Purpose
 
 Overlay ini dipakai saat:
+
 - reconstruction sudah punya `coverage-ledger.md`, `drift-ambiguity-report.md`, atau `gaps/GAP-*.md`
 - user menemukan dokumen lama / semi-valid / mungkin stale
 - dokumen ingin dipakai untuk memperbaiki rekonstruksi tanpa mengooptasi proses hard-evidence
 
 Prinsip:
+
 - dokumen masuk sebagai `hypothesis feed`, bukan reference design otomatis
 - klaim dokumen harus diverifikasi terhadap hard evidence
 - dokumen paling berguna untuk menutup gap, menjelaskan intent, dan menemukan search target baru
@@ -54,6 +56,7 @@ reconstruction/docs-feed/
 ```
 
 Main artifacts updated only after verification:
+
 - `01-evidence-catalog.md`
 - `02-coverage-ledger.md`
 - `05-behavior-spine.md`
@@ -71,12 +74,14 @@ Main artifacts updated only after verification:
 ## 3. Evidence Rule
 
 Dokumen dapat menaikkan confidence hanya bila:
+
 - klaimnya atomic
 - ada hard evidence pendukung
 - tidak ada counter-evidence kuat
 - status freshness jelas atau accepted as historical intent
 
 Dokumen tidak boleh:
+
 - langsung mengubah reference design
 - menutup gap tanpa verification
 - mengganti code/runtime evidence
@@ -87,24 +92,26 @@ Dokumen tidak boleh:
 ## 4. L0 — Register Late Docs
 
 Tujuan:
+
 - catat dokumen sebagai input baru
 - jangan langsung baca sebagai kebenaran
 
 Output:
+
 - `reconstruction/docs-feed/DOC-xxx-register.md`
 
 Fields:
 
-| Field | Value |
-|---|---|
-| Doc ID | `DOC-001` |
-| Path/URL | `[path]` |
-| Title | `[title]` |
-| Date / version | `[date/version/unknown]` |
-| Owner / author | `[owner/unknown]` |
-| Source type | internal doc / ADR / README / diagram / runbook / ticket / spec |
-| Suspected freshness | fresh / stale / unknown |
-| Intended use | close gap / explain intent / validate reference design / find search targets |
+| Field               | Value                                                                        |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Doc ID              | `DOC-001`                                                                    |
+| Path/URL            | `[path]`                                                                     |
+| Title               | `[title]`                                                                    |
+| Date / version      | `[date/version/unknown]`                                                     |
+| Owner / author      | `[owner/unknown]`                                                            |
+| Source type         | internal doc / ADR / README / diagram / runbook / ticket / spec              |
+| Suspected freshness | fresh / stale / unknown                                                      |
+| Intended use        | close gap / explain intent / validate reference design / find search targets |
 
 ---
 
@@ -112,16 +119,17 @@ Fields:
 
 Classify each doc or section:
 
-| Class | Meaning | How to Use |
-|---|---|---|
-| `Normative` | says how system should be | compare with implementation, possible target design |
-| `Descriptive` | says how system currently works | verify against code/runtime |
-| `Historical` | explains past decision | use as ADR/context, not current fact |
-| `Operational` | runbook/deploy/incident | verify runtime/deploy behavior |
-| `Speculative` | proposal/draft | use only as hypothesis |
-| `Generated` | auto docs/diagrams | verify generator freshness |
+| Class         | Meaning                         | How to Use                                          |
+| ------------- | ------------------------------- | --------------------------------------------------- |
+| `Normative`   | says how system should be       | compare with implementation, possible target design |
+| `Descriptive` | says how system currently works | verify against code/runtime                         |
+| `Historical`  | explains past decision          | use as ADR/context, not current fact                |
+| `Operational` | runbook/deploy/incident         | verify runtime/deploy behavior                      |
+| `Speculative` | proposal/draft                  | use only as hypothesis                              |
+| `Generated`   | auto docs/diagrams              | verify generator freshness                          |
 
 Also assign freshness:
+
 - `Fresh`
 - `Possibly Stale`
 - `Stale`
@@ -134,27 +142,30 @@ Also assign freshness:
 Do not summarize document narrative. Extract atomic claims.
 
 Good claims:
+
 - `POS checkout posts ledger through outbox`
 - `Inventory period lock applies to refunds`
 - `orders and customers are protected by RLS`
 - `BDS is authoritative for tenant/branch provisioning`
 
 Bad claims:
+
 - `Architecture is clean and event-driven`
 - `Inventory module handles everything`
 - `System follows DDD`
 
 Claim table:
 
-| Claim ID | Claim | Doc Source | Section | Class | Freshness | Related Gap | Initial Status |
-|---|---|---|---|---|---|---|---|
-| CL-001 | `[claim]` | `DOC-001` | `#section` | Descriptive | Unknown | `GAP-001` | Unverified |
+| Claim ID | Claim     | Doc Source | Section    | Class       | Freshness | Related Gap | Initial Status |
+| -------- | --------- | ---------- | ---------- | ----------- | --------- | ----------- | -------------- |
+| CL-001   | `[claim]` | `DOC-001`  | `#section` | Descriptive | Unknown   | `GAP-001`   | Unverified     |
 
 ---
 
 ## 7. L3 — Map Claims To Gaps
 
 Prioritize claims that touch:
+
 - weight 5–4 gap
 - `Covered with Critical Risk`
 - `Contradicted`
@@ -166,13 +177,14 @@ Prioritize claims that touch:
 
 Mapping table:
 
-| Claim | Maps To | Why Useful | Verification Query |
-|---|---|---|---|
+| Claim    | Maps To                   | Why Useful               | Verification Query             |
+| -------- | ------------------------- | ------------------------ | ------------------------------ |
 | `CL-001` | `GAP-001-checkout-ledger` | doc says outbox intended | `rg createPosLedgerOutbox src` |
 
 Claims not mapped to current gaps go to backlog, not immediate reconstruction.
 
 If multiple docs hit same area:
+
 - normalize duplicate/near-duplicate claims into `CLAIMS-AGGREGATE.md`
 - verify once per cluster where possible
 - keep per-doc claim files for traceability
@@ -191,6 +203,7 @@ For each prioritized claim:
 6. Assign final status.
 
 Status values:
+
 - `Verified`
 - `Partially Verified`
 - `Contradicted`
@@ -201,9 +214,9 @@ Status values:
 
 Verification table:
 
-| Claim ID | Support Evidence | Counter-Evidence | Final Status | Confidence | Impact |
-|---|---|---|---|---|---|
-| `CL-001` | `[path:line]` | `[path:line]` | Contradicted | High | update drift report |
+| Claim ID | Support Evidence | Counter-Evidence | Final Status | Confidence | Impact              |
+| -------- | ---------------- | ---------------- | ------------ | ---------- | ------------------- |
+| `CL-001` | `[path:line]`    | `[path:line]`    | Contradicted | High       | update drift report |
 
 ---
 
@@ -212,32 +225,38 @@ Verification table:
 Update rules:
 
 ### If claim is `Verified`
+
 - add doc as supporting evidence in `01-evidence-catalog.md`
 - update affected map/artifact
 - update nearest relevant root/child `AGENTS.md` if local context docs exist for touched area
 - increase confidence only if hard evidence also supports it
 
 ### If claim is `Partially Verified`
+
 - update gap dossier
 - add missing evidence plan
 - refresh local `AGENTS.md` only if doc must surface material ambiguity change
 - keep status `Partial` or `Covered with Risk`
 
 ### If claim is `Contradicted`
+
 - add to `12-drift-ambiguity-report.md`
 - do not update reference design to match doc
 - if affected DOCR docs exist, update them to preserve contradiction instead of stale certainty
 - mark as doc drift or implementation drift after decision
 
 ### If claim is `Historical Intent`
+
 - optionally add to reference design rationale
 - do not treat as current state
 
 ### If claim is `Target Design Only`
+
 - add to backlog/decision notes
 - do not alter current reference design unless user chooses target design adoption
 
 ### If claim is `Obsolete`
+
 - record as obsolete; no artifact change except docs-feed summary
 
 ---
@@ -246,15 +265,16 @@ Update rules:
 
 Each verified/contradicted claim must end with decision:
 
-| Decision | Meaning |
-|---|---|
-| `Adopt as current reference design` | claim matches hard evidence |
-| `Adopt as target design` | doc describes desired future, not current code |
-| `Reject as stale` | doc contradicted and not target |
-| `Keep as historical rationale` | useful why, not current what |
-| `Escalate` | conflict needs human/product/ops decision |
+| Decision                            | Meaning                                        |
+| ----------------------------------- | ---------------------------------------------- |
+| `Adopt as current reference design` | claim matches hard evidence                    |
+| `Adopt as target design`            | doc describes desired future, not current code |
+| `Reject as stale`                   | doc contradicted and not target                |
+| `Keep as historical rationale`      | useful why, not current what                   |
+| `Escalate`                          | conflict needs human/product/ops decision      |
 
 Reference design must separate:
+
 - current verified design
 - target design candidates
 - stale/contradicted docs
@@ -279,6 +299,7 @@ feed docs docs/RLS_PLAN.md into reconstruction for tenant-isolation until readin
 ```
 
 Per-loop protocol:
+
 1. Register doc.
 2. Extract atomic claims.
 3. Pick highest-weight claim mapped to current gaps.
@@ -288,6 +309,7 @@ Per-loop protocol:
 7. Decide continue/stop.
 
 Stop conditions:
+
 - all high-priority claims verified/contradicted/obsolete
 - no claim remains mapped to weight 5–4 unresolved gap
 - readiness verdict changes and user stops
@@ -299,10 +321,12 @@ Stop conditions:
 ## 12. Practical Example
 
 Current reconstruction says:
+
 - checkout uses direct JIEL posting
 - outbox exists but not wired to checkout
 
 Late doc says:
+
 - `checkout posts ledger via outbox`
 
 Verification:
@@ -314,10 +338,12 @@ rg -n "postCheckoutToJiel" src/lib/server/services/pos/checkout.ts
 ```
 
 Possible result:
+
 - no production checkout caller for `createPosLedgerOutbox`
 - direct `postCheckoutToJiel` found
 
 Final status:
+
 - claim = `Contradicted`
 - doc = stale or target design candidate
 - reference design remains direct-post current state
@@ -341,24 +367,29 @@ Optional final summary:
 # Docs Feed Summary
 
 ## Docs Processed
+
 | Doc | Class | Freshness | Claims | Verified | Contradicted | Target Design Only | Historical Intent | Obsolete |
-|---|---|---|---:|---:|---:|---:|---:|---:|
+| --- | ----- | --------- | ------ | -------- | ------------ | ------------------ | ----------------- | -------- |
 
 ## Multi-Doc Aggregation
+
 | Area | Aggregate Used? | Aggregate File | Notes |
-|---|---|---|---|
+| ---- | --------------- | -------------- | ----- |
 
 ## Reconstruction Changes
+
 | Artifact | Change | Reason |
-|---|---|---|
+| -------- | ------ | ------ |
 
 ## Target Design Only Claims
+
 | Claim | Source | Why Not Current-State Fact | Revisit Trigger |
-|---|---|---|---|
+| ----- | ------ | -------------------------- | --------------- |
 
 ## Reference Design Impact
+
 | Claim | Decision | Notes |
-|---|---|---|
+| ----- | -------- | ----- |
 ```
 
 ---

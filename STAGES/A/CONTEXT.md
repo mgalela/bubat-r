@@ -63,15 +63,7 @@ Write output to this stage directory first:
 - `STAGES/A/03-main-spine.md`
 - `STAGES/A/docr-candidates.md`
 
-After stage done, copy to target repo:
-
-```bash
-cp STAGES/A/00-workflow-status.md <target>/reconstruction/
-cp STAGES/A/01-evidence-catalog.md <target>/reconstruction/
-cp STAGES/A/02-coverage-ledger.md <target>/reconstruction/
-cp STAGES/A/03-main-spine.md <target>/reconstruction/
-cp STAGES/A/docr-candidates.md <target>/reconstruction/
-```
+After stage done, mark as `Done` in `00-workflow-status.md`.
 
 ## AST Index Commands
 

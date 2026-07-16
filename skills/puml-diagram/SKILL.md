@@ -190,11 +190,9 @@ java -Djava.awt.headless=true -jar /path/to/plantuml.jar -tpng "*.puml" -o png/
 
 Bila gagal: perbaiki syntax `.puml`, ulang.
 
-### 4. Copy ke reconstruction
+### 4. Export ke reconstruction
 
-```bash
-cp -r STAGES/K/diagrams/png/ <project>/reconstruction/diagrams/png/
-```
+Jangan copy manual. Jalankan `bubat-r export <target-path> stages K` setelah PNG sukses ter-generate.
 
 ## Syntax Rules (PNG error prevention)
 

@@ -47,11 +47,7 @@ Write output to this stage directory first:
 
 - `STAGES/E/07-domain-map.md`
 
-After stage done, copy to target repo:
-
-```bash
-cp STAGES/E/07-domain-map.md <target>/reconstruction/
-```
+After stage done, mark as `Done` in `00-workflow-status.md`.
 
 ## AST Index Commands
 
