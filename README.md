@@ -57,6 +57,21 @@ npx github:mgalela/bubat-r update --tag v1.1.0
 npx github:mgalela/bubat-r update --branch develop
 ```
 
+Update is **artifact-safe** — only framework files are replaced:
+
+| What gets updated | What is preserved |
+|---|---|
+| `STAGES/*/CONTEXT.md` (stage instructions) | `STAGES/*/01-13.md` (your artifacts) |
+| `commands/`, `overlays/`, `docs/` | `STAGES/J/root-AGENTS.md`, `*-AGENTS.md` |
+| `skills/`, `templates/` | `.claude/settings.local.json` |
+| Root `CONTEXT.md`, `README.md` | Any file unique to your project |
+
+To replace everything including artifacts (destructive):
+
+```bash
+npx github:mgalela/bubat-r install --force --dir .bubat-r
+```
+
 **Version check:**
 
 ```bash
