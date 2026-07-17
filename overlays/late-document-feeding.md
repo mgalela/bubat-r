@@ -119,14 +119,15 @@ Fields:
 
 Classify each doc or section:
 
-| Class         | Meaning                         | How to Use                                          |
-| ------------- | ------------------------------- | --------------------------------------------------- |
-| `Normative`   | says how system should be       | compare with implementation, possible target design |
-| `Descriptive` | says how system currently works | verify against code/runtime                         |
-| `Historical`  | explains past decision          | use as ADR/context, not current fact                |
-| `Operational` | runbook/deploy/incident         | verify runtime/deploy behavior                      |
-| `Speculative` | proposal/draft                  | use only as hypothesis                              |
-| `Generated`   | auto docs/diagrams              | verify generator freshness                          |
+| Class                 | Meaning                                          | How to Use                                                          |
+| --------------------- | ------------------------------------------------ | ------------------------------------------------------------------- |
+| `Normative`           | says how system should be                        | compare with implementation, possible target design                 |
+| `Normative-Refactor`  | describes post-refactor state (code already changed) | verify claims vs code; then sweep artifacts for pre-refactor sections |
+| `Descriptive`         | says how system currently works                  | verify against code/runtime                                         |
+| `Historical`          | explains past decision                           | use as ADR/context, not current fact                                |
+| `Operational`         | runbook/deploy/incident                          | verify runtime/deploy behavior                                      |
+| `Speculative`         | proposal/draft                                   | use only as hypothesis                                              |
+| `Generated`           | auto docs/diagrams                               | verify generator freshness                                          |
 
 Also assign freshness:
 
@@ -134,6 +135,24 @@ Also assign freshness:
 - `Possibly Stale`
 - `Stale`
 - `Unknown`
+
+**Post-refactor detection — two signals (use both):**
+
+Signal A — explicit user flag:
+```
+bubat-r feed docs <path> --type post-refactor
+```
+When flag present, force class `Normative-Refactor`.
+
+Signal B — agent prompt at L1 when class is ambiguous:
+```
+Doc ini mendeskripsikan state sebelum atau sesudah refactor?
+→ Pre-refactor  → classify normal (Descriptive/Historical)
+→ Post-refactor → classify Normative-Refactor
+→ Tidak tahu   → classify Unknown freshness, trigger L4 artifact cross-check anyway
+```
+
+If neither signal available, proceed to L4 artifact cross-check — it will surface the gap structurally.
 
 ---
 
@@ -205,6 +224,7 @@ For each prioritized claim:
 Status values:
 
 - `Verified`
+- `Verified-Artifact-Stale` — claim matches code but existing artifact describes old state
 - `Partially Verified`
 - `Contradicted`
 - `Unverified`
@@ -212,11 +232,21 @@ Status values:
 - `Target Design Only`
 - `Obsolete`
 
+**L4 artifact cross-check (always run after Verified):**
+
+For each claim that reaches `Verified` vs code:
+1. Grep affected STAGES/ artifacts for the old behavior this claim replaces.
+2. If artifact still describes old behavior → status = `Verified-Artifact-Stale`.
+3. Record: which artifact, which section, what old behavior conflicts.
+
+This catches post-refactor docs even when user did not declare `--type post-refactor`.
+
 Verification table:
 
-| Claim ID | Support Evidence | Counter-Evidence | Final Status | Confidence | Impact              |
-| -------- | ---------------- | ---------------- | ------------ | ---------- | ------------------- |
-| `CL-001` | `[path:line]`    | `[path:line]`    | Contradicted | High       | update drift report |
+| Claim ID | Support Evidence | Counter-Evidence | Artifact Conflict | Final Status             | Confidence | Impact                  |
+| -------- | ---------------- | ---------------- | ----------------- | ------------------------ | ---------- | ----------------------- |
+| `CL-001` | `[path:line]`    | `[path:line]`    | `[artifact:sec]`  | Verified-Artifact-Stale  | High       | sweep artifact sections |
+| `CL-002` | `[path:line]`    | `[path:line]`    | none              | Verified                 | High       | update evidence catalog |
 
 ---
 
@@ -230,6 +260,14 @@ Update rules:
 - update affected map/artifact
 - update nearest relevant root/child `AGENTS.md` if local context docs exist for touched area
 - increase confidence only if hard evidence also supports it
+
+### If claim is `Verified-Artifact-Stale`
+
+- add doc as supporting evidence in `01-evidence-catalog.md`
+- **sweep all flagged artifact sections** — replace pre-refactor descriptions with post-refactor state
+- record each artifact section updated in `docs-feed-summary.md` under "Refactor Propagation"
+- update `12-drift-ambiguity-report.md` — note artifacts were stale due to refactor, now resolved
+- update nearest relevant root/child `AGENTS.md`
 
 ### If claim is `Partially Verified`
 
@@ -375,6 +413,11 @@ Optional final summary:
 
 | Area | Aggregate Used? | Aggregate File | Notes |
 | ---- | --------------- | -------------- | ----- |
+
+## Refactor Propagation
+
+| Claim | Artifact | Section | Old State | New State |
+| ----- | -------- | ------- | --------- | --------- |
 
 ## Reconstruction Changes
 
