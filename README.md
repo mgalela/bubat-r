@@ -27,6 +27,76 @@ Use BUBAT-R for:
 
 ## Install
 
+### Via npx (recommended)
+
+Install into any project directory. Default target: `.bubat-r/`.
+
+```bash
+# Install from main branch
+npx github:mgalela/bubat-r install
+
+# Install + wire into agent config files
+npx github:mgalela/bubat-r install --tool claude
+npx github:mgalela/bubat-r install --tool claude,opencode,codex,pi
+
+# Install specific release
+npx github:mgalela/bubat-r install --tag v1.0.0
+
+# Custom target dir
+npx github:mgalela/bubat-r install --dir .bubat-r
+
+# HTTPS instead of SSH
+npx github:mgalela/bubat-r install --https
+```
+
+**Update:**
+
+```bash
+npx github:mgalela/bubat-r update
+npx github:mgalela/bubat-r update --tag v1.1.0
+npx github:mgalela/bubat-r update --branch develop
+```
+
+Update is **artifact-safe** — only framework files are replaced:
+
+| What gets updated | What is preserved |
+|---|---|
+| `STAGES/*/CONTEXT.md` (stage instructions) | `STAGES/*/01-13.md` (your artifacts) |
+| `commands/`, `overlays/`, `docs/` | `STAGES/J/root-AGENTS.md`, `*-AGENTS.md` |
+| `skills/`, `templates/` | `.claude/settings.local.json` |
+| Root `CONTEXT.md`, `README.md` | Any file unique to your project |
+
+To replace everything including artifacts (destructive):
+
+```bash
+npx github:mgalela/bubat-r install --force --dir .bubat-r
+```
+
+**Version check:**
+
+```bash
+bubat-r version
+bubat-r version --dir .bubat-r
+```
+
+**Uninstall** (removes dir and cleans config files):
+
+```bash
+bubat-r uninstall
+```
+
+**Integrate with coding agents** (after install):
+
+```bash
+bubat-r integrate --tool claude          # CLAUDE.md → @.bubat-r/CONTEXT.md
+bubat-r integrate --tool opencode        # CONTEXT.md
+bubat-r integrate --tool codex           # AGENTS.md
+bubat-r integrate --tool pi              # SYSTEM.md
+bubat-r integrate --tool all
+```
+
+Integrations are idempotent — re-run safely. Markers (`<!-- bubat-r:start/end -->`) allow clean update and removal.
+
 ### Inside this workspace
 
 No install needed. Use files directly:

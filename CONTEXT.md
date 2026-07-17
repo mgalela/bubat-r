@@ -44,3 +44,18 @@ Available commands:
 - `bubat-r research <question> [for <area>] [max-depth <n>]` — parallel research
 - `bubat-r feed bubat` — feed reconstruction into BUBAT
 - `bubat-r export docr [for <area>] [max-depth <n>]` — export hierarchical context docs
+
+## Installer Commands
+
+These are **shell commands** — run them in terminal, not as AI workflow steps.
+Do NOT try to interpret or simulate these; just execute the shell command directly.
+
+| Command | Shell command to run |
+| ------- | -------------------- |
+| `bubat-r version` | `npx github:mgalela/bubat-r version --dir .bubat-r` |
+| `bubat-r install` | `npx github:mgalela/bubat-r install` |
+| `bubat-r update` | `npx github:mgalela/bubat-r update --dir .bubat-r` |
+| `bubat-r uninstall` | `npx github:mgalela/bubat-r uninstall --dir .bubat-r` |
+| `bubat-r integrate --tool <name>` | `npx github:mgalela/bubat-r integrate --tool <name> --dir .bubat-r` |
+
+`version` shows installed version, source (git/npx), integrations, and update status.

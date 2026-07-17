@@ -1,0 +1,23 @@
+{
+  "name": "bubat-r",
+  "version": "0.1.0",
+  "description": "BUBAT-R: architecture reconstruction toolkit for coding agents",
+  "bin": {
+    "bubat-r": "./bin/bubat-r.js"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [
+    "architecture",
+    "reconstruction",
+    "ai",
+    "coding-agents",
+    "bubat"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mgalela/bubat-r.git"
+  }
+}
