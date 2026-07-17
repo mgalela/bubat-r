@@ -17,6 +17,15 @@ const COPY_SKIP = new Set([
   '.npmignore', '.gitignore', VERSION_FILE,
 ]);
 
+// During UPDATE: in STAGES/<stage>/ subdirs, only these filenames are framework
+// (safe to overwrite). Everything else is a project artifact — skip.
+const STAGES_FRAMEWORK_FILES = new Set(['CONTEXT.md', 'quality-rules.md']);
+
+// During UPDATE: root-level dirs that are pure framework (safe to fully overwrite)
+const FRAMEWORK_DIRS = new Set(['commands', 'overlays', 'docs', 'skills', 'templates']);
+// Root files safe to overwrite
+const FRAMEWORK_ROOT_FILES = new Set(['CONTEXT.md', 'README.md']);
+
 // Tool integration definitions
 // Each tool: which config file to inject into, and what snippet to write
 const TOOLS = {
@@ -173,6 +182,54 @@ function copyDir(src, dst, isRoot, dryRun) {
   }
 }
 
+// Update-safe copy: preserves project artifacts in STAGES/, skips .claude/
+// Only touches framework files so filled artifacts are never overwritten.
+function copyDirUpdate(src, dst, dryRun) {
+  if (!dryRun) fs.mkdirSync(dst, { recursive: true });
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    if (COPY_SKIP.has(entry.name)) continue;
+
+    const s = path.join(src, entry.name);
+    const d = path.join(dst, entry.name);
+
+    if (entry.isDirectory()) {
+      if (entry.name === 'STAGES') {
+        // Only copy CONTEXT.md (and STAGES_FRAMEWORK_FILES) per stage subdir
+        copyStagesFramework(s, d, dryRun);
+      } else if (FRAMEWORK_DIRS.has(entry.name)) {
+        // Pure framework dirs — overwrite fully
+        copyDir(s, d, false, dryRun);
+      }
+      // .claude/ and anything else: skip
+    } else if (entry.isFile()) {
+      if (FRAMEWORK_ROOT_FILES.has(entry.name)) {
+        if (!dryRun) fs.copyFileSync(s, d);
+      }
+      // Non-framework root files: skip
+    }
+  }
+}
+
+// Copy only framework files inside STAGES/ — each stage subdir gets CONTEXT.md only
+function copyStagesFramework(src, dst, dryRun) {
+  if (!dryRun) fs.mkdirSync(dst, { recursive: true });
+  for (const stageEntry of fs.readdirSync(src, { withFileTypes: true })) {
+    if (!stageEntry.isDirectory()) continue;
+    const stageS = path.join(src, stageEntry.name);
+    const stageD = path.join(dst, stageEntry.name);
+    for (const fileEntry of fs.readdirSync(stageS, { withFileTypes: true })) {
+      if (!fileEntry.isFile()) continue;
+      if (!STAGES_FRAMEWORK_FILES.has(fileEntry.name)) continue;
+      const fileSrc = path.join(stageS, fileEntry.name);
+      const fileDst = path.join(stageD, fileEntry.name);
+      if (!dryRun) {
+        fs.mkdirSync(stageD, { recursive: true });
+        fs.copyFileSync(fileSrc, fileDst);
+      }
+    }
+  }
+}
+
 function escRx(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -321,11 +378,12 @@ function cmdUpdate(opts) {
   const needsSpecificRef = opts.tag || (opts.branch !== DEFAULT_BRANCH);
 
   if (srcDir && !needsSpecificRef) {
-    // Running from new npx version — copy over
+    // Running from new npx version — copy over (framework files only, artifacts preserved)
     const pkgVer = getPackageVersion();
     console.log(`Source: package v${pkgVer}`);
+    console.log('Mode: framework-only (STAGES artifacts preserved)');
     if (!dryRun) {
-      copyDir(srcDir, absDir, true, false);
+      copyDirUpdate(srcDir, absDir, false);
       writeVersionFile(absDir, {
         ...(existing || {}),
         pkg_version: pkgVer,
@@ -335,7 +393,7 @@ function cmdUpdate(opts) {
       });
       console.log(`Updated to v${pkgVer}`);
     } else {
-      console.log(`[dry-run] Would copy from package v${pkgVer}`);
+      console.log(`[dry-run] Would update framework files from package v${pkgVer}`);
     }
     return;
   }
