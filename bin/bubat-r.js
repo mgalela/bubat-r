@@ -303,7 +303,7 @@ function cmdInstall(opts) {
 }
 
 function cmdUpdate(opts) {
-  const { dir, ref, useHttps, dryRun, noGit } = opts;
+  const { dir, ref, useHttps, dryRun } = opts;
   const absDir = path.resolve(dir);
 
   if (!fs.existsSync(absDir)) {
@@ -342,12 +342,13 @@ function cmdUpdate(opts) {
 
   // Git update
   if (!fs.existsSync(path.join(absDir, '.git'))) {
-    if (existing?.source === 'npx') {
-      console.error('Installed via npx copy (no .git). To update:');
-      console.error(`  npx github:mgalela/bubat-r update --dir ${dir}`);
-    } else {
-      console.error('No .git in install dir. Re-install: bubat-r install --force');
-    }
+    // No git repo — could be npx-copy install or manual copy
+    console.error(`${dir} has no git history (npx-copy or manual install).`);
+    console.error('To update, re-run via npx so the new package is copied over:');
+    console.error(`  npx github:mgalela/bubat-r update --dir ${dir}`);
+    console.error('');
+    console.error('Or replace entirely:');
+    console.error(`  npx github:mgalela/bubat-r install --force --dir ${dir}`);
     process.exit(1);
   }
 
