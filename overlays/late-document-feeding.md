@@ -47,7 +47,7 @@ Main A–H/I produces coverage + gaps
 Output overlay:
 
 ```text
-reconstruction/docs-feed/
+${BUBATR_HOME}/STAGES/overlays/docs-feed/
   DOC-001-register.md
   DOC-001-claims.md
   DOC-001-verification.md
@@ -98,7 +98,7 @@ Tujuan:
 
 Output:
 
-- `reconstruction/docs-feed/DOC-xxx-register.md`
+- `${BUBATR_HOME}/STAGES/overlays/docs-feed/DOC-xxx-register.md`
 
 Fields:
 
@@ -204,7 +204,7 @@ Claims not mapped to current gaps go to backlog, not immediate reconstruction.
 
 If multiple docs hit same area:
 
-- normalize duplicate/near-duplicate claims into `CLAIMS-AGGREGATE.md`
+- normalize duplicate/near-duplicate claims into `${BUBATR_HOME}/STAGES/overlays/docs-feed/CLAIMS-AGGREGATE.md`
 - verify once per cluster where possible
 - keep per-doc claim files for traceability
 
@@ -265,8 +265,8 @@ Update rules:
 
 - add doc as supporting evidence in `01-evidence-catalog.md`
 - **sweep all flagged artifact sections** — replace pre-refactor descriptions with post-refactor state
-- record each artifact section updated in `docs-feed-summary.md` under "Refactor Propagation"
-- update `12-drift-ambiguity-report.md` — note artifacts were stale due to refactor, now resolved
+- record each artifact section updated in `${BUBATR_HOME}/STAGES/overlays/docs-feed/docs-feed-summary.md` under "Refactor Propagation"
+- update `STAGES/I/12-drift-ambiguity-report.md` (or `STAGES/H/` if Stage I not yet run) — note artifacts were stale due to refactor, now resolved
 - update nearest relevant root/child `AGENTS.md`
 
 ### If claim is `Partially Verified`
@@ -278,7 +278,7 @@ Update rules:
 
 ### If claim is `Contradicted`
 
-- add to `12-drift-ambiguity-report.md`
+- add to `STAGES/I/12-drift-ambiguity-report.md` (or `STAGES/H/` if Stage I not yet run)
 - do not update reference design to match doc
 - if affected DOCR docs exist, update them to preserve contradiction instead of stale certainty
 - mark as doc drift or implementation drift after decision
@@ -392,7 +392,7 @@ Final status:
 ## 13. Deliverables
 
 ```text
-reconstruction/docs-feed/
+${BUBATR_HOME}/STAGES/overlays/docs-feed/
   DOC-001-register.md
   DOC-001-claims.md
   DOC-001-verification.md
