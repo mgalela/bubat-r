@@ -44,6 +44,9 @@ Available commands:
 - `bubat-r research <question> [for <area>] [max-depth <n>]` — parallel research
 - `bubat-r feed bubat` — feed reconstruction into BUBAT
 - `bubat-r export docr [for <area>] [max-depth <n>]` — export hierarchical context docs
+- `bubat-r adr <title>` — create ADR sourced from artifacts (refactoring SDLC)
+- `bubat-r plan <adr-id>` — generate refactor plan from ADR
+- `bubat-r impact <adr-id>` — identify stale artifacts after refactor done
 
 ## Installer Commands
 
