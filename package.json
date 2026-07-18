@@ -1,6 +1,6 @@
 {
   "name": "bubat-r",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "BUBAT-R: architecture reconstruction toolkit for coding agents",
   "bin": {
     "bubat-r": "./bin/bubat-r.js"
