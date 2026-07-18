@@ -46,7 +46,14 @@ Semua diagram WAJIB `top to bottom direction` di baris kedua setelah `@startuml`
 top to bottom direction
 ```
 
-Lihat arrow direction rules di `skills/puml-diagram/SKILL.md`.
+Arrow direction:
+
+| Konteks | Arrow |
+|---------|-------|
+| Flow utama (request → service → DB → response) | `-down->` |
+| Branch YES path | `-down->` |
+| Branch NO / parallel path | `-right->` atau `-left->` |
+| Antar flow section di consolidated file | `fN_title -[hidden]down-> fM_title` |
 
 ## Rule 6: C4 PlantUML Syntax
 
@@ -90,3 +97,13 @@ Selalu produce dua layer:
 - **Per-topik** (`*-path-{topic}.puml`): satu flow per file, lebih verbose — navigasi cepat, reference individu, embed di doc
 
 Topic names: `storage`, `catalog`, `query`, `managed`, `pipeline`, `ext-connection`, `lifecycle`
+
+## Rule 10: Syntax Rules (PNG error prevention)
+
+| Larangan | Contoh salah | Perbaikan |
+|----------|-------------|-----------|
+| Inline rectangle di arrow target | `src -> rectangle "X" as a #C : "label"` | Deklarasi rectangle dulu, baru arrow |
+| `?` di luar string | `WHERE id=?` | Ganti ke `WHERE id = :id` |
+| `database` keyword di dataflow/sequence | `database "DB" as db` | Gunakan `rectangle "DB" as db` |
+| `(line:?)` di label | `(line:?)` | Ganti ke `(line:UNKNOWN)` |
+| Duplicate `@startuml` name antar file | dua file pakai nama sama | Setiap file harus punya nama unik |

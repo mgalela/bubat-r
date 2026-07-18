@@ -80,6 +80,7 @@ end note
 ```
 
 Rules:
+
 - Gunakan `package "Name" as id #A9DCDF { component ... }` — bukan `rectangle` nested
 - External systems di LUAR container boundary `{}`
 - Setiap handler WAJIB punya line ref: `(line:NNN)` atau `(line:UNKNOWN)` — jangan dihapus
@@ -151,14 +152,98 @@ endlegend
 @enduml
 ```
 
+### read/write-path-sequence-{topic}.puml (per-topik sequence)
+
+```puml
+@startuml {project}-read-path-sequence-{topic}
+!pragma layout smetana  ' force top-to-bottom participant stacking
+
+skinparam {
+  BackgroundColor #FEFEFE
+  ParticipantPadding 20
+  BoxPadding 10
+  ArrowColor #333333
+  ActorBorderColor #08427B
+  DatabaseBorderColor #438DD5
+  LifeLineBackgroundColor #FFFFFF
+}
+
+' ── Participants ──
+actor "Client / Gateway" as client #08427B
+box "Service Layer" #E3F2FD
+  participant "ServiceName\n:port" as svc
+end box
+box "Storage Layer" #E8F5E9
+  database "DB / S3\n:bucket/dbname" as db
+end box
+
+' ── Flow: {FlowName} ──
+== Flow N: {FlowName} ==
+
+client -> svc ++ : "METHOD /path\npayload schema"
+note right: headers: {auth, content-type}
+
+svc -> svc : "validasi input\nfilename:validasi()"
+note right #FFF3E0
+  [VALIDASI] …
+end note
+
+alt cache hit
+  svc -> db : "check cache"
+  db --> svc : "cached result"
+else cache miss
+  svc -> db ++ : "SELECT / GET\nquery params"
+  note right #FFF3E0
+    [PERFORMANCE] …
+  end note
+  db --> svc -- : "result set"
+  svc -> svc : "transform response\nfilename:format()"
+end
+
+svc --> client -- : "200 OK\nresponse schema"
+note right
+  ⚠️ risk description bila ada
+  File: filename:function()
+end note
+
+@enduml
+```
+
+Aturan sequence:
+
+1. **Sync vs Async**: `->>` sync, `->` async/fire-and-forget.
+2. **Activation bar**: `++` masuk, `--` keluar. Wajib dipasangkan.
+3. **Branching**: `alt/else/end` untuk conditional. Jangan pakai `if` di dalam participant.
+4. **Loop**: `loop N times / end` untuk retry/polling patterns.
+5. **Cache boundary**: `alt cache hit / cache miss` bila behavior-spine menyebut cache strategy.
+6. **Time notes**: `note right: ~Xms` bila ada timeout/metrics di behavior-spine.
+7. **Color**: header `#E3F2FD` read, `#E8F5E9` write.
+8. **No participants inline**: deklarasi semua participant di awal sebelum `== Flow ==`.
+
+### read/write-path-sequence.puml (konsolidasi)
+
+Sama seperti per-topik, tapi:
+
+- Semua flows dalam satu file, dipisah `== Flow N: Name ==` separator
+- Semua participant dideklarasi di awal, termasuk yang reusable antar flow
+- Antar flow pakai separator `==` — jangan pakai hidden arrow
+- Urutkan flow dari paling sederhana ke paling kompleks
+
+### diagrams/README.md
+
+```markdown
+# Diagram Index
+
+Seperti section Output di CONTEXT.md.
+
+## ⚠️ Security Annotations
+
+All `⚠️` markers trace to `12-drift-ambiguity-report.md`.
+```
+
 ## Arrow Direction Rules
 
-| Konteks | Arrow |
-|---------|-------|
-| Flow utama (request → service → DB → response) | `-down->` |
-| Branch YES path | `-down->` |
-| Branch NO / parallel path | `-right->` atau `-left->` |
-| Antar flow section di consolidated file | `fN_title -[hidden]down-> fM_title` |
+→ See `STAGES/K/quality-rules.md` Rule 5.
 
 ## Auto-generate PNG
 
@@ -166,15 +251,8 @@ Setelah semua `.puml` ditulis:
 
 ### 1. Detect PlantUML JAR
 
-Cari di urutan ini:
-```bash
-find /opt/homebrew -name "plantuml.jar" 2>/dev/null | head -1
-find ~/.vscode/extensions -name "plantuml.jar" 2>/dev/null | head -1
-which plantuml
-brew --prefix plantuml 2>/dev/null
-```
-
-Bila tidak ada: `brew install plantuml`
+Cek apakah `plantuml.jar` telah terinstall; sebagai plugin java ataupun extension vscode.
+Bila tidak ada hentikan proses lalu notif user untuk install `plantuml.jar`
 
 ### 2. Generate
 
@@ -196,10 +274,4 @@ Jangan copy manual. Jalankan `bubat-r export <target-path> stages K` setelah PNG
 
 ## Syntax Rules (PNG error prevention)
 
-| Larangan | Contoh salah | Perbaikan |
-|----------|-------------|-----------|
-| Inline rectangle di arrow target | `src -> rectangle "X" as a #C : "label"` | Deklarasi rectangle dulu, baru arrow |
-| `?` di luar string | `WHERE id=?` | Ganti ke `WHERE id = :id` |
-| `database` keyword di dataflow | `database "DB" as db` | Gunakan `rectangle "DB" as db` |
-| `(line:?)` di label | `(line:?)` | Ganti ke `(line:UNKNOWN)` |
-| Duplicate `@startuml` name | dua file pakai nama sama | Setiap file harus punya nama unik |
+→ See `STAGES/K/quality-rules.md` Rule 10.
