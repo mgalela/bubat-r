@@ -75,6 +75,12 @@ Mark stage `Blocked` when:
 | ------- | ------------------------------------------------- | -----: | ----------- |
 | `[gap]` | Open / Partial / Covered / Contradicted / Blocked |      5 | `[next]`    |
 
+## Active Refactoring Cycles
+
+| ADR | Plan | ADR Status | Impact Analyzed |
+| --- | ---- | ---------- | --------------- |
+| _(none — run `bubat-r adr <title>` to start a refactoring cycle)_ | — | — | — |
+
 ## Cross-Dir Links
 
 | linked_node                                                  | status_path | shared_topics |
