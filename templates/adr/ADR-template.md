@@ -1,3 +1,5 @@
+adr-code: ADR-YYYYMMDD-NNN
+
 # ADR — [Judul Singkat]
 
 - Status: **PROPOSED** | **ACCEPTED** | **IN PROGRESS** | **IMPLEMENTED** | **ABANDONED**
@@ -27,8 +29,8 @@
 
 ## Affected BUBAT-R Areas
 
-<!-- Diisi otomatis oleh `bubat-r adr` (heuristic). Review dan koreksi. -->
-<!-- `bubat-r impact` membaca section ini setelah ADR IMPLEMENTED. -->
+<!-- Draft: heuristic dari title. Update setelah Problem + Keputusan diisi. -->
+<!-- `bubat-r impact` membaca section ini — pastikan sudah di-review sebelum ADR IMPLEMENTED. -->
 
 - [ ] Runtime boundary / executable unit  → Stage B (runtime-map), Stage G (component-map)
 - [ ] Flow / write-path behavior           → Stage C (behavior-spine), Stage F (contract-map)

@@ -147,13 +147,13 @@ Tambah section `## Active Refactoring Cycles` setelah `## Active Gaps`:
 ```markdown
 ## Active Refactoring Cycles
 
-| ADR | Plan | ADR Status | Impact Analyzed |
-|---|---|---|---|
-| `STAGES/overlays/adrs/<file>.md` | `STAGES/overlays/plans/<file>.md` | Proposed / Accepted / In Progress / IMPLEMENTED / Abandoned | No / Yes — `STAGES/overlays/impact/<file>.md` |
+| Code | ADR | Plan | ADR Status | Impact Analyzed |
+|---|---|---|---|---|
+| `ADR-YYYYMMDD-NNN` | `STAGES/overlays/adrs/<file>.md` | `STAGES/overlays/plans/<file>.md` | Proposed / Accepted / In Progress / IMPLEMENTED / Abandoned | No / Yes — `STAGES/overlays/impact/<file>.md` |
 ```
 
 Update rules:
-- `bubat-r adr` → tambah row baru, Plan = `—`, Impact = `No`
+- `bubat-r adr` → tambah row baru: Code = `adr-code`, Plan = `—`, Impact = `No`
 - `bubat-r plan` → isi kolom Plan
 - `bubat-r impact` → update kolom Impact = `Yes — <path>`
 - ADR status diupdate manual oleh user (BUBAT-R tidak auto-detect kode selesai)
