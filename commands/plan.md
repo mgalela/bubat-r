@@ -17,14 +17,17 @@ bubat-r plan STAGES/overlays/adrs/ADR-2026-07-16-duckdb-primary-dwh.md
 Tentukan `${BUBATR_HOME}`.
 
 ADR file lookup:
+
 1. Jika argumen adalah path (mengandung `/`): resolve langsung.
 2. Jika argumen adalah ID: cari `${BUBATR_HOME}/STAGES/overlays/adrs/<adr-id>.md`.
 
 Template lookup (prioritas):
+
 1. Cari `docs/issues/CONTEXT.md` di project target root — jika ada, baca section `## Refactor Plan Template`.
 2. Jika tidak ada: gunakan `${BUBATR_HOME}/templates/refactor-plan/PLAN-template.md` (built-in).
 
 Output:
+
 - `${BUBATR_HOME}/STAGES/overlays/plans/PL-<adr-code>.md` — e.g. `PL-ADR-20260718-001.md`
 - Opsional short suffix: `PL-<adr-code>-<short>.md` — hanya jika user sediakan label pendek (≤30 char, no spaces)
 - `<adr-code>` diambil dari baris pertama ADR file (`adr-code: ADR-YYYYMMDD-NNN`)
@@ -54,6 +57,7 @@ Output:
 12. Tulis ke plan file section `## Detail Plans` dengan placeholder:
     ```markdown
     ## Detail Plans
+
     _Belum dibuat. Jalankan `bubat-r plan-detail <plan-id>` untuk generate per-phase detail files._
     ```
 
@@ -67,12 +71,12 @@ Setiap task di generated plan harus punya tiga elemen:
 
 Task yang terlalu abstrak tidak diterima:
 
-| Tidak diterima | Harus diganti dengan |
-|---|---|
-| "refactor auth middleware" | "extract `verifyToken()` dari `middleware/auth.go:45` ke `lib/jwt.go` — gate: `go build ./...` clean + `TestAuthMiddleware` pass" |
-| "update tests" | "update `TestDWHClient` di `client_test.go:12` — tambah case: nil db returns error" |
-| "cleanup old code" | "hapus `legacy/dwhduck_cli.go` — gate: `grep -r 'defaultDuckDBCLI' .` returns empty" |
-| "pisah module" | "buat `tools/dwhduck/go.mod` dengan `module dwhduck`, tambah `replace` ke root module — gate: `cd tools/dwhduck && go mod tidy` clean" |
+| Tidak diterima             | Harus diganti dengan                                                                                                                   |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| "refactor auth middleware" | "extract `verifyToken()` dari `middleware/auth.go:45` ke `lib/jwt.go` — gate: `go build ./...` clean + `TestAuthMiddleware` pass"      |
+| "update tests"             | "update `TestDWHClient` di `client_test.go:12` — tambah case: nil db returns error"                                                    |
+| "cleanup old code"         | "hapus `legacy/dwhduck_cli.go` — gate: `grep -r 'defaultDuckDBCLI' .` returns empty"                                                   |
+| "pisah module"             | "buat `tools/dwhduck/go.mod` dengan `module dwhduck`, tambah `replace` ke root module — gate: `cd tools/dwhduck && go mod tidy` clean" |
 
 Jika ADR Migration Plan sudah granular: salin langsung dan format sebagai checklist tasks.
 Jika ADR Migration Plan masih high-level: decompose per file/symbol yang disebutkan di `Shape Implementasi`.
@@ -100,29 +104,37 @@ Phase structure:
 **Depends on:** none
 
 ### Summary
+
 <Apa yang dilakukan di phase ini — satu paragraf.>
 
 ### Tasks
+
 - [ ] [target: file/symbol] [aksi konkret] — gate: [cara verifikasi]
 - [ ] [target] [aksi] — gate: [verifikasi]
 
 ### Acceptance
+
 - [ ] [kriteria terukur — angka, test pass/fail, grep result]
 - [ ] [kriteria terukur]
 
 ### Planned changes
+
 <Daftar file/symbol yang akan berubah.>
 
 ### Executed changes
+
 <Diisi setelah eksekusi.>
 
 ### Results
+
 <Output acceptance check.>
 
 ### Findings
+
 <Temuan tak terduga.>
 
 ### Notes
+
 <Catatan untuk phase berikutnya.>
 ```
 
@@ -173,12 +185,14 @@ bubat-r plan-detail STAGES/overlays/plans/PL-ADR-20260718-001.md
 6. Update main plan `## Detail Plans` section:
    ```markdown
    ## Detail Plans
+
    **Directory:** `STAGES/overlays/plans/<plan-id>/`
    | Phase | File | Status |
    |---|---|---|
    | A — <title> | `phase-A.md` | ⏳ pending |
    | B — <title> | `phase-B.md` | ⏳ pending |
    ```
+7. hapus konten yang sudah disalin ke phase files dari main plan file.
 
 ## Rule
 
@@ -228,19 +242,23 @@ bubat-r test-plan <plan-id> --phase A
 **Execution status:** PENDING
 
 ## Pre-conditions
+
 [Derived dari plan header + Depends on]
 
 ## Test Cases
 
 ### TC-01: <derived dari gate/acceptance>
+
 **Input:** ...
 **Expected:** ...
 **Pass criteria:**
+
 - [ ] ...
 
 ## Deviation Log
-| TC | Status | Deviasi | Catatan |
-|---|---|---|---|
+
+| TC  | Status | Deviasi | Catatan |
+| --- | ------ | ------- | ------- |
 ```
 
 5. Update main plan `## Detail Plans` (atau phase file header): tambah link ke test plan.

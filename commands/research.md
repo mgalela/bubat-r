@@ -29,8 +29,14 @@ bubat-r research "which runtimes consume tenant events" for tenant-isolation max
 4. Decompose into focused research lanes.
 5. Run parallel discovery sweep using structural search first.
 6. Consolidate candidate evidence and counter-evidence.
-7. Save research memo under `${BUBATR_HOME}/STAGES/overlays/research/`.
-7. Recommend exact artifact updates or next `bubat-r gap` loop.
+7. **Before saving:** if deeper depth findings contradict an earlier-depth table or count, update the shallower section to match. No internal inconsistency allowed in the saved memo.
+8. **Append `## Canonical Summary` section** at the end of every research memo — mandatory. This section is the authoritative snapshot consumed by downstream commands (`bubat-r adr`, `bubat-r plan`). It must contain:
+   - Final coupling/dependency table (if applicable) — supersedes any per-depth tables above
+   - Final quantitative claims (file counts, line counts, method counts) with explicit calculation shown
+   - Final recommended action list (numbered, actionable)
+   - Mark any claim that changed between depths as `[revised from Depth N]`
+9. Save research memo under `${BUBATR_HOME}/STAGES/overlays/research/`.
+10. Recommend exact artifact updates or next `bubat-r gap` loop.
 
 ## Rule
 

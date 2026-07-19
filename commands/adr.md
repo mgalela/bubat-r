@@ -35,13 +35,14 @@ Output:
 5. Derive `adr-code` = `ADR-YYYYMMDD-NNN` (e.g. `ADR-20260718-001`).
 6. Baca artifacts per resolution path di atas. Jika artifact tidak ada, skip dengan catatan.
 7. Filter evidence relevan ke scope `<title>` — jangan dump semua rows. Ikuti aturan di `overlays/refactor-lifecycle.md § 4. Evidence Relevance Filter`.
-8. Buat direktori `${BUBATR_HOME}/STAGES/overlays/adrs/` jika belum ada.
-9. Tulis file ADR dari template di `templates/adr/ADR-template.md`.
+8. **Cross-check kuantitatif:** jika ADR berisi file count, line count, atau method count yang juga disebutkan di research memo `## Canonical Summary` — verifikasi angkanya identik. Jika berbeda: gunakan angka yang punya kalkulasi eksplisit (research memo), dan catat perbedaannya. Jangan tulis angka baru tanpa kalkulasi yang dikutip.
+9. Buat direktori `${BUBATR_HOME}/STAGES/overlays/adrs/` jika belum ada.
+10. Tulis file ADR dari template di `templates/adr/ADR-template.md`.
    - Baris pertama dokumen (sebelum `# ADR —`): `adr-code: <adr-code>`
    - Pre-fill `## BUBAT-R Evidence Source` dari evidence yang ditemukan.
    - Pre-fill `## Affected BUBAT-R Areas` dengan heuristic awal dari title — tandai sebagai **draft** (lihat Pre-fill Rules).
    - Sisakan semua section lain untuk diisi user.
-10. Update `${BUBATR_HOME}/STAGES/A/00-workflow-status.md`:
+11. Update `${BUBATR_HOME}/STAGES/A/00-workflow-status.md`:
     - Tambah section `## Active Refactoring Cycles` jika belum ada.
     - Tambah row baru: `adr-code`, ADR path, Plan = `—`, ADR Status = `Proposed`, Impact = `No`.
 
@@ -62,7 +63,9 @@ Include dari GAP files:
 - Gap area overlap dengan title
 
 Include dari research memos:
-- Hanya: recommended action + key finding. Bukan seluruh memo.
+- **Baca `## Canonical Summary` section** (jika ada) — ini sumber truth, bukan seluruh memo.
+- Jika `## Canonical Summary` tidak ada: baca `## Recommendation` section.
+- Jangan baca intermediate per-depth tables sebagai sumber truth — bisa stale.
 
 Jika tidak ada evidence relevan: tulis `No relevant evidence found — run bubat-r run first for evidence-backed ADR.`
 
@@ -90,11 +93,26 @@ Gunakan template `templates/adr/ADR-template.md`. Jika project target punya form
 Filename: `ADR-YYYYMMDD-NNN-<slug>.md`  
 Baris pertama file: `adr-code: ADR-YYYYMMDD-NNN`
 
+## Migration Step Citation Rule
+
+Setiap step di `## Migration Plan` harus bisa di-trace ke source:
+
+- Jika step berasal dari research memo recommendation: tambah inline `(→ research: <section>)`.
+- Jika step adalah kesimpulan ADR sendiri (bukan dari research): tandai `(→ ADR reasoning)`.
+- Jika tidak ada source yang jelas: tandai `[needs citation]` — jangan hapus stepnya, tapi flag.
+
+Ini mencegah scope drift antara research recommendation dan ADR migration steps.
+
 ## Rule
 
 ```text
 ADR tanpa artifact citation adalah opini.
 Jika tidak ada artifacts: tulis itu secara eksplisit di Evidence Source section.
+```
+
+```text
+Research memo bisa punya banyak tabel — baca Canonical Summary, bukan per-depth tables.
+Jika Canonical Summary tidak ada di research memo: minta user update dulu sebelum ADR dibuat.
 ```
 
 Canonical ADR status ada di file ADR itu sendiri, bukan di `00-workflow-status.md`.
