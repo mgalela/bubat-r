@@ -45,7 +45,7 @@ Output:
 10. Buat direktori `${BUBATR_HOME}/STAGES/overlays/impact/` jika belum ada.
 11. Tulis IMPACT file (lihat format di bawah).
 12. Update `${BUBATR_HOME}/STAGES/A/00-workflow-status.md`:
-    - Update baris ADR di `## Active Refactoring Cycles`: kolom `Impact Analyzed` = `Yes — <path-ke-impact-file>`.
+    - Update baris ADR di `## Active Refactoring Cycles`: kolom `Impact Analyzed` = `Yes — <path-ke-impact-file>` juga kolom `Status` sesuaikan dengan status pada dokumen ADR.
 
 ## Output: IMPACT File
 
