@@ -37,6 +37,7 @@ Every `bubat-r <command>` MUST read the corresponding `.bubat-r/commands/<comman
 Available commands — reconstruction:
 
 - `bubat-r run [path]` — first-pass hard-evidence reconstruction
+- `bubat-r ask "<question>" [for <area>]` — answer from artifacts; offer research + write back if unknown
 - `bubat-r research <question> [for <area>] [max-depth <n>]` — parallel research
 - `bubat-r gap <area> max <n>` — critical gap deepening loop
 - `bubat-r gap backfill <area>` — promote existing research into a formal `GAP-*.md` (no new loop)
