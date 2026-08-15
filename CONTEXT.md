@@ -34,18 +34,26 @@ runtime behavior > write-path > schema/migrations > tests > deploy config > read
 
 Every `bubat-r <command>` MUST read the corresponding `.bubat-r/commands/<command>.md` first before executing.
 
-Available commands:
+Available commands — reconstruction:
 
 - `bubat-r run [path]` — first-pass hard-evidence reconstruction
+- `bubat-r research <question> [for <area>] [max-depth <n>]` — parallel research
 - `bubat-r gap <area> max <n>` — critical gap deepening loop
+- `bubat-r gap backfill <area>` — promote existing research into a formal `GAP-*.md` (no new loop)
 - `bubat-r feed docs <path> for <area> max <n>` — late/stale docs feeding
+- `bubat-r feed bubat` — feed reconstruction into BUBAT
+- `bubat-r link <target-dir> [from <source-dir>]` — bidirectional link between BUBAT-R nodes
 - `bubat-r status` — show reconstruction status
 - `bubat-r verdict` — readiness verdict
-- `bubat-r research <question> [for <area>] [max-depth <n>]` — parallel research
-- `bubat-r feed bubat` — feed reconstruction into BUBAT
+- `bubat-r export [target-path] [to <output-dir>] [stages <A-K>]` — copy STAGES/ artifacts to output dir
 - `bubat-r export docr [for <area>] [max-depth <n>]` — export hierarchical context docs
-- `bubat-r adr <title>` — create ADR sourced from artifacts (refactoring SDLC)
-- `bubat-r plan <adr-id>` — generate refactor plan from ADR
+
+Available commands — refactoring SDLC:
+
+- `bubat-r adr <title>` — create ADR sourced from artifacts
+- `bubat-r plan <adr-id>` — generate refactor plan from ADR (issues mode: `--issues`)
+- `bubat-r plan-detail <plan-id>` — split main plan into per-phase detail files
+- `bubat-r test-plan <plan-id> [--phase <letter>]` — generate test plan companion to a plan
 - `bubat-r impact <adr-id>` — identify stale artifacts after refactor done
 
 ## Installer Commands
