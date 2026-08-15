@@ -219,6 +219,16 @@ reconstruction/13-risk-register.md
 reconstruction/14-safe-change-readiness.md
 ```
 
+Then learn the system by asking. `bubat-r ask` answers from the reconstruction artifacts, cites evidence, and says `Unknown` when the artifacts don't know — offering to `bubat-r research` and writing back what it learns:
+
+```text
+bubat-r ask "how does the ingest pipeline run a job?"
+bubat-r ask "who owns table X?" for ownership
+bubat-r ask "is it safe to change the query endpoint?"
+```
+
+Cheapest read is category-dependent — flow questions surface a Stage K diagram to view, factual questions grep the evidence catalog, risk questions hit the drift/annotation table. See `commands/ask.md`.
+
 ### 3. Critical gap deepening
 
 Use when initial reconstruction finds high-risk partial/unknown area.
@@ -312,6 +322,7 @@ bubat-r/overlays/docr-materialization.md
 
 ```text
 bubat-r run
+bubat-r ask "<question>" [for <area>]
 bubat-r gap <area> max <n>
 bubat-r feed docs <path> for <area> max <n>
 bubat-r status
