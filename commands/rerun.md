@@ -9,7 +9,7 @@ Uses `${BUBATR_HOME}` — replace with actual location (default: `.bubat-r/`).
 ## Intent
 
 ```text
-bubat-r rerun [target-path] [--from-stage X] [--stages A,B,C] [--rewrite]
+bubat-r rerun [target-path] [--from-stage X] [--stages A,B,C] [--impact <adr-id>] [--rewrite]
 ```
 
 Examples:
@@ -19,6 +19,8 @@ bubat-r rerun
 bubat-r rerun ./apps/api
 bubat-r rerun --from-stage B
 bubat-r rerun --stages A,G,H
+bubat-r rerun --impact ADR-2026-07-16-duckdb-primary-dwh
+bubat-r rerun --impact ADR-2026-07-16-duckdb-primary-dwh --rewrite
 bubat-r rerun --from-stage A --rewrite
 ```
 
@@ -27,9 +29,10 @@ bubat-r rerun --from-stage A --rewrite
 | `[target-path]` | no | Same resolution as `bubat-r run`. Defaults to current repo. |
 | `--from-stage X` | no | Re-run stage X and all Done downstream stages (cascade). |
 | `--stages A,B,C` | no | Re-run only these stages (in dependency order). |
+| `--impact <adr-id>` | no | Derive scope from existing IMPACT file for this ADR. See §Impact-Driven Scope. |
 | `--rewrite` | no | Full re-generation per stage. Default: patch mode. |
 
-Mutually exclusive: `--from-stage` and `--stages`.
+Mutually exclusive: `--from-stage`, `--stages`, and `--impact`.
 
 ## Update Modes
 
@@ -48,7 +51,55 @@ Use `patch` for routine code changes. Use `--rewrite` when structure changed sig
 4. Determine scope using reconciled stage map:
    - `--from-stage X` → cascade: X plus all reconciled-valid Done/In-Progress stages downstream.
    - `--stages A,B,C` → exactly those stages if reconciled-valid; skip and warn any that are not.
+   - `--impact <adr-id>` → derive from IMPACT file (see §Impact-Driven Scope); reconcile against stage map.
    - no flag → show reconciled stage map to user, then prompt scope.
+
+## Impact-Driven Scope
+
+When `--impact <adr-id>` is provided:
+
+1. Resolve IMPACT file:
+   - If `<adr-id>` is a path (contains `/`): resolve directly.
+   - If `<adr-id>` is an ID: look up `${BUBATR_HOME}/STAGES/overlays/impact/IMPACT-<adr-id>.md`.
+   - If file not found: stop with error:
+     ```
+     IMPACT file not found for <adr-id>.
+     Run `bubat-r impact <adr-id>` first to generate the impact analysis.
+     ```
+
+2. Read IMPACT file. Extract:
+   - `## Recommended Re-run Order` — ordered stage list (Stage B, C, G, H …)
+   - `## Stale Artifacts` — table rows with `Stage` column; use to cross-check and fill any stage missed by re-run order section.
+   - `Analyzed: YYYY-MM-DD` — warn if impact analysis is older than 7 days.
+
+3. Build candidate stage list from union of both extractions, preserving dependency order from cascade chain (`A → B → … → K`).
+
+4. Apply Status vs Filesystem Reconciliation (Pre-flight step 2) to candidate list — same rules as other scope modes.
+
+5. Present impact-driven scope summary to user before proceeding:
+
+   ```
+   Impact source: IMPACT-<adr-id>.md (analyzed: YYYY-MM-DD)
+   ADR status at analysis: <status>
+
+   Derived scope:
+     B  Done  valid   — runtime-map (area: <affected area>)
+     C  Done  valid   — behavior-spine (area: <affected flow>)
+     G  Done  valid   — component-map (area: <affected component>)
+
+   ALWAYS artifacts: coverage-ledger.md, drift-ambiguity-report.md (always updated)
+
+   Proceed with this scope? (yes / adjust)
+   ```
+
+6. If `Analyzed` date > 7 days ago, surface warning:
+   ```
+   Warning: impact analysis is N days old. Code may have drifted further.
+   Consider re-running `bubat-r impact <adr-id>` to refresh before rerun.
+   ```
+   Do not block — user may confirm and proceed.
+
+7. Continue with standard Pre-flight steps 4–7 and per-stage loop using the derived scope.
 
 ## Protocol
 
@@ -169,6 +220,8 @@ Run mode header: change to `update` (from `first-pass`).
 - If artifact doesn't exist for a Done stage (inconsistent state): warn user, skip stage, suggest `bubat-r run --from-stage X` to regenerate from scratch.
 - Do not auto-cascade beyond user-specified scope without explicit confirmation.
 - If >60% of evidence items in a stage are stale in patch mode: stop and recommend `--rewrite` for that stage.
+- `--from-stage`, `--stages`, `--impact` are mutually exclusive — error if more than one provided.
+- `--impact` requires an existing IMPACT file — it does not run `bubat-r impact` automatically.
 
 ## Related Commands
 
