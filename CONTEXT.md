@@ -47,6 +47,7 @@ Available commands:
 - `bubat-r adr <title>` — create ADR sourced from artifacts (refactoring SDLC)
 - `bubat-r plan <adr-id>` — generate refactor plan from ADR
 - `bubat-r impact <adr-id>` — identify stale artifacts after refactor done
+- `bubat-r rerun [path] [--from-stage X] [--stages A,B,C] [--rewrite]` — re-run stages against existing artifacts when code changed
 
 ## Installer Commands
 
