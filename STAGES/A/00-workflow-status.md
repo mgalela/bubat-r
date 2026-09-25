@@ -2,7 +2,7 @@
 
 Project: `[PROJECT]`  
 Date: `[YYYY-MM-DD]`  
-Run mode: `first-pass / takeover / gap-deepening / docr-refresh / mixed`
+Run mode: `first-pass / takeover / gap-deepening / docr-refresh / update / mixed`
 
 ## Node
 - node_id: `[root | backend | frontend | worker | ...]`
@@ -57,6 +57,12 @@ Mark stage `Blocked` when:
 
 - runtime, secrets, infra, or access missing
 - verification path cannot continue
+
+After `bubat-r rerun`, Notes column for updated stages:
+
+```
+Updated: YYYY-MM-DD | prior: Done since YYYY-MM-DD | N stale, M new EV
+```
 
 ## Coverage Snapshot
 

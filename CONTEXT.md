@@ -56,6 +56,7 @@ Available commands — refactoring SDLC:
 - `bubat-r plan-detail <plan-id>` — split main plan into per-phase detail files
 - `bubat-r test-plan <plan-id> [--phase <letter>]` — generate test plan companion to a plan
 - `bubat-r impact <adr-id>` — identify stale artifacts after refactor done
+- `bubat-r rerun [path] [--from-stage X] [--stages A,B,C] [--rewrite]` — re-run stages against existing artifacts when code changed
 
 ## Installer Commands
 

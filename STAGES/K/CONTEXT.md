@@ -15,8 +15,8 @@ Input minimum:
 
 - `03-main-spine.md` — services, key abstractions, security model
 - `04-runtime-map.md` — containers, ports, deployment units
-- `09-component-map.md` — komponen per service, dependencies
-- `10-code-trace-map.md` — file:line refs per handler/function
+- `09-component-map.md` — komponen per service, dependencies — WAJIB juga untuk dataflow diagrams (node = component, bukan service)
+- `10-code-trace-map.md` — file:line refs per handler/function — WAJIB juga untuk dataflow diagrams (line ref tiap node)
 
 Input preferred:
 
@@ -24,6 +24,34 @@ Input preferred:
 - `07-domain-map.md` — bounded contexts, owned tables (untuk context enrichment)
 - `08-contract-map.md` — endpoints, break risk (untuk ⚠️ High pada contract)
 - `12-drift-ambiguity-report.md` — CRITICAL/HIGH drift items → sumber ⚠️ annotations
+
+## Dataflow Node Granularity — WAJIB Component Level
+
+Node dataflow (read-path/write-path, konsolidasi & per-topik) DILARANG berhenti di level service (mis. `rectangle "be Attendance" as be`). Tiap node WAJIB pecah jadi component/handler individual, konsisten dengan `c4-component-{svc}.puml`:
+
+- Source flow di `05-behavior-spine.md` → map tiap step ke component di `09-component-map.md`
+- Tiap component node WAJIB line ref dari `10-code-trace-map.md`: `ComponentName\nfilename:function()\n(line:NNN)` (atau `(line:UNKNOWN)` bila belum diketahui — lihat Rule 4)
+- Package per service tetap dipertahankan sebagai boundary visual (`package "be" as be_pkg #A9DCDF { ... }`), component individual digambar di dalamnya
+- DB/storage tetap node terpisah di luar package, sama seperti c4-component
+
+Contoh salah (service-level, DILARANG):
+```puml
+rectangle "be Attendance" as be #438DD5
+a -down-> be : "GET /api/v1/checkin/:id, / (PASETO)"
+be -down-> pg : "GetCheckin / GetCheckinByTenantAndUID"
+```
+
+Contoh benar (component-level, WAJIB):
+```puml
+package "be" as be_pkg #A9DCDF {
+  component "CheckinHandler\nattendance_handler.go:GetCheckin()\n(line:142)" as h_checkin
+}
+rectangle "PostgreSQL" as pg #438DD5
+a -down-> h_checkin : "GET /api/v1/checkin/:id, / (PASETO)"
+h_checkin -down-> pg : "GetCheckin / GetCheckinByTenantAndUID"
+```
+
+Berlaku untuk semua file dataflow (`*-path-dataflow.puml`, `*-path-{topic}.puml`) dan sequence (`*-path-sequence*.puml`) — bukan hanya component diagram.
 
 ## Output
 
@@ -33,14 +61,14 @@ Generated from BUBAT-R Stage K.
 | ------------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------- | ----------------------------------- |
 | `diagrams/c4-container.puml`                | C4 Container     | Container diagram: semua services, ports, tables, deprecated, external                   | 04-runtime-map                      |
 | `diagrams/c4-component-{svc}.puml`          | C4 Component     | Per service: handler components + security ⚠️ + line refs                                | 09-component-map, 10-code-trace-map |
-| `diagrams/read-path-dataflow.puml`          | Dataflow         | Semua read flows konsolidasi (flow header per flow)                                      | 05-behavior-spine                   |
-| `diagrams/write-path-dataflow.puml`         | Dataflow         | Semua write flows konsolidasi                                                            | 05-behavior-spine                   |
-| `diagrams/read-path-{topic}.puml`           | Dataflow (topic) | Per topik, satu flow per file (navigable)                                                | 05-behavior-spine                   |
-| `diagrams/write-path-{topic}.puml`          | Dataflow (topic) | Per topik                                                                                | 05-behavior-spine                   |
-| `diagrams/read-path-sequence.puml`          | Sequence         | Semua read flows konsolidasi — urutan temporal antar service + DB                        | 05-behavior-spine                   |
-| `diagrams/write-path-sequence.puml`         | Sequence         | Semua write flows konsolidasi — urutan temporal antar service + DB                       | 05-behavior-spine                   |
-| `diagrams/read-path-sequence-{topic}.puml`  | Sequence (topic) | Per topik read sequence, satu flow per file                                              | 05-behavior-spine                   |
-| `diagrams/write-path-sequence-{topic}.puml` | Sequence (topic) | Per topik write sequence, satu flow per file                                             | 05-behavior-spine                   |
+| `diagrams/read-path-dataflow.puml`          | Dataflow         | Semua read flows konsolidasi (flow header per flow), node = component               | 05-behavior-spine, 09-component-map, 10-code-trace-map |
+| `diagrams/write-path-dataflow.puml`         | Dataflow         | Semua write flows konsolidasi, node = component                                     | 05-behavior-spine, 09-component-map, 10-code-trace-map |
+| `diagrams/read-path-{topic}.puml`           | Dataflow (topic) | Per topik, satu flow per file (navigable), node = component                         | 05-behavior-spine, 09-component-map, 10-code-trace-map |
+| `diagrams/write-path-{topic}.puml`          | Dataflow (topic) | Per topik, node = component                                                         | 05-behavior-spine, 09-component-map, 10-code-trace-map |
+| `diagrams/read-path-sequence.puml`          | Sequence         | Semua read flows konsolidasi — urutan temporal antar component + DB                 | 05-behavior-spine, 09-component-map, 10-code-trace-map |
+| `diagrams/write-path-sequence.puml`         | Sequence         | Semua write flows konsolidasi — urutan temporal antar component + DB                | 05-behavior-spine, 09-component-map, 10-code-trace-map |
+| `diagrams/read-path-sequence-{topic}.puml`  | Sequence (topic) | Per topik read sequence, satu flow per file, participant = component                | 05-behavior-spine, 09-component-map, 10-code-trace-map |
+| `diagrams/write-path-sequence-{topic}.puml` | Sequence (topic) | Per topik write sequence, satu flow per file, participant = component               | 05-behavior-spine, 09-component-map, 10-code-trace-map |
 | `diagrams/README.md`                        | Index            | Index diagram: file, purpose, input artifact                                             | —                                   |
 | `diagrams/png/*.png`                        | Image            | PNG generated dari setiap `.puml` — layout top-to-bottom, readable tanpa zoom horizontal | —                                   |
 
@@ -61,8 +89,8 @@ Topic naming: `storage`, `catalog`, `query`, `managed`, `pipeline`, `ext-connect
 | Changed artifact               | Regenerate                                                                   |
 | ------------------------------ | ---------------------------------------------------------------------------- |
 | `04-runtime-map.md`            | `c4-container.puml`                                                          |
-| `09-component-map.md`          | `c4-component-{svc}.puml` untuk service yang berubah                         |
-| `10-code-trace-map.md`         | semua `c4-component-*.puml` (line refs berubah)                              |
+| `09-component-map.md`          | `c4-component-{svc}.puml` untuk service yang berubah + semua `*-path-dataflow.puml`/`*-path-sequence*.puml` yang memakai component dari service tsb |
+| `10-code-trace-map.md`         | semua `c4-component-*.puml` + semua `*-path-dataflow.puml`/`*-path-sequence*.puml` (line refs berubah) |
 | `05-behavior-spine.md`         | `*-path-dataflow.puml` + `*-path-sequence.puml` + per-topic yang terpengaruh |
 | `12-drift-ambiguity-report.md` | semua files (⚠️ annotations bisa berubah)                                    |
 | `08-contract-map.md`           | `c4-container.puml` + per-topic path files yang relevan                      |
@@ -74,6 +102,7 @@ Topic naming: `storage`, `catalog`, `query`, `managed`, `pipeline`, `ext-connect
 - semua component groups dari `09-component-map.md` ada di component diagrams yang sesuai
 - semua CRITICAL/HIGH dari `12-drift-ambiguity-report.md` punya `⚠️` di diagram
 - semua handler components punya line ref dari `10-code-trace-map.md` (atau explicit `(line:UNKNOWN)`)
+- **semua node di dataflow & sequence diagram (read-path/write-path, konsolidasi & per-topik) level component/handler — bukan level service** (lihat "Dataflow Node Granularity — WAJIB Component Level"); tiap node punya line ref
 - consolidated dataflow + per-topic files keduanya ada
 - **sequence diagram konsolidasi + per-topic** untuk write-path & read-path keduanya ada
 - semua sequence diagram punya `++`/`--` activation pairs yang valid (tidak ada activation floating)
